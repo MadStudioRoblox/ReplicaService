@@ -63,11 +63,11 @@ when immediate replication of individual nested replicas is not desirable.
 
 Server-side:
 ```lua
--- A valid usecase is when it is desired for clients to receive a
+-- A valid use case is when it is desired for clients to receive a
 --   replica structure with all children replicated together as
 --   opposed to the client first receiving a parent creation signal
 --   (with missing children at that moment) and child creation
---   signals coming in seperately:
+--   signals coming in separately:
 
 local UseTemporary = true -- Set to false to make the replicas be
 --   replicated separately
@@ -197,7 +197,7 @@ through `.NewReplicaSignal` or `.ReplicaOfClassCreated()`, ReplicaController pro
 -   When the client receives first data or receives selective replication of a top level replica,
 			`.NewReplicaSignal` and `.ReplicaOfClassCreated()` will be fired for all replicas in the
       order they were created server-side from earliest to latest
-		
+
 ### ReplicaController.GetReplicaById()
 ```lua
 ReplicaController.GetReplicaById(replica_id) --> [Replica] or nil
@@ -281,7 +281,7 @@ Reference to the parent `Replica`. All **nested replicas** *will* have a parent.
 **nested replicas** will never become **top level replicas** and vice versa.
 #### Replica.Children
 ```lua
-Replica.Children   [table] -- (read-only) {replica, ...} 
+Replica.Children   [table] -- (read-only) {replica, ...}
 ```
 An array of replicas parented to this `Replica`.
 #### Replica:Identify()
@@ -344,7 +344,7 @@ Sets any individual value within `Replica.Data` to `value`. Parameter `value` ca
 will set the value located in `path` to `nil`.
 #### Replica:SetValues()
 ```lua
-Replica:SetValues(path, values) 
+Replica:SetValues(path, values)
 ```
 Sets multiple keys located in `path` to specified `values`
 ```lua
@@ -408,8 +408,8 @@ local WriteLib = {
     end
     return amount_taken
   end,
-  AddCoins = function(replica, coint_count)
-    replica:SetValue({"CoinsInside"}, replica.Data.CoinsInside + coint_count)
+  AddCoins = function(replica, coin_count)
+    replica:SetValue({"CoinsInside"}, replica.Data.CoinsInside + coin_count)
   end,
   TakeAllCoins = function() --> coins_taken
     local coins = replica.Data.CoinsInside
@@ -577,7 +577,7 @@ Replica:ListenToChange(path, listener) --> [ScriptConnection]
 --   listener   [function] (new_value)
 ```
 Creates a listener which gets triggered by `Replica:SetValue()` calls.
-#### Replica:ListenToNewKey() 
+#### Replica:ListenToNewKey()
 ```lua
 Replica:ListenToNewKey(path, listener) --> [ScriptConnection]
 --   listener   [function] (new_value, new_key)
