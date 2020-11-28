@@ -2,31 +2,28 @@
 
 ReplicaService is a selective state replication system.
 
-A [state](https://en.wikipedia.org/wiki/State_(computer_science)) is 
+ReplicaService helps you make server-side code to control and replicate any state to all
+clients or only a select few.
 
-The benefits of using ProfileService for your game's profiles are:
+A state (in layman's terms, a lua table that may contain almost anything) is wrapped with a `Replica` - like the name inplies,
+it creates a replica of the wrapped state which is sent to desired clients. You may define clients who will see that replica,
+call mutator functions on the `Replica` to change the state (will change contents of the wrapped table) and make the clients
+listen to those changes or simply read the state whenever necessary. Furthermore, a `Replica` can be parented to another
+`Replica` (with a few exceptions discussed later), unloaded for select clients and, of course, destroyed.
 
-- **Easy to learn, and eventually forget** - ProfileService does not give you any data getter or setter functions. It gives you the freedom to write your own data interface.
+What's good about ReplicaService:
 
-- **Built for massive scalability** - low resource footprint, no excessive type checking. Great for 100+ player servers. ProfileService automatically spreads the DataStore API calls evenly within the auto-save loop timeframe.
+- **Go big and go small** - Create powerful replication systems with WriteLibs (state mutation functions) or
+use built-in mutators to change any value within a state.
+- **Go MMO** - ReplicaService selective replication allows you to easily subscribe users to game chunks / player owned houses
+that they are currently nearby / inside - You can make the client automatically load in the assets making up the replicated area
+as soon as it receives the Replica object.
+- **Low network usage** - ReplicaService only sends the whole state when the player first receives a replica.
+Afterwards only individual changes are sent.
+- **Just replication, whatever you need replicated** - ReplicaService does very little runtime typechecking which might be
+desirable for projects pushing the limits of the Roblox engine and convenient for people who want to get their hands dirty quick.
+Testing is still important - write your own type checking as you see fit.
 
-- **Already does the things you wouldn't dare script yourself (but should)** - session-locking is essential to keeping your data protected from multiple server editing - this is a potential cause of item loss or item duplication loopholes. ProfileService offers a very comprehensive and short API for handling session-locking yourself or just letting ProfileService do it automatically for you.
+If anything is missing or broken, [file an issue on GitHub](https://github.com/MadStudioRoblox/ReplicaService/issues).
 
-- **Future-proof** - with features like `MetaTags` and `GlobalUpdates`, you will always be able to add new functionality to your profiles without headaches.
-
-- **Made for ambitious projects** - ProfileService is a **profile object abstraction** detached from the `Player` instance - this allows the developer to create profiles for entities other than players, such as: group-owned houses, savable multiplayer game instances, etc.
-
----
-*ProfileService is part of the **Madwork** framework*
-*Developed by [loleris](https://twitter.com/LM_loleris)*
-
-***It's documented:***
-**[ProfileService wiki](https://madstudioroblox.github.io/ProfileService/)**
-
-***It's open source:***
-[Roblox library](https://www.roblox.com/library/5331689994/ProfileService)
-
-**Watch while you eat pizza on the couch - YouTube tutorials:**  
-**[ProfileService tutorial playlist](https://www.youtube.com/playlist?list=PLUUm0OvGDjJ8_e8co48ngMJC4XwCaUIIH)** by @okeanskiy  
-**[Session-locking explained and savable leaderstats](https://youtu.be/P5NuM0gPmew)** by @EncodedLua  
-(Will add new tutorials as they come)
+If you need help integrating ReplicaService into your project, [join the discussion]().

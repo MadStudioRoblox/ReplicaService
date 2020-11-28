@@ -27,6 +27,6 @@ Afterwards only individual changes are sent.
 desirable for projects pushing the limits of the Roblox engine and convenient for people who want to get their hands dirty quick.
 Testing is still important - write your own type checking as you see fit.
 
-If anything is missing or broken, [file an issue on GitHub](https://github.com/MadStudioRoblox/ProfileService/issues).
+If anything is missing or broken, [file an issue on GitHub](https://github.com/MadStudioRoblox/ReplicaService/issues).
 
-If you need help integrating ProfileService into your project, [join the discussion](https://devforum.roblox.com/t/profileservice-a-datastore-module/667805).
+If you need help integrating ReplicaService into your project, [join the discussion]().
