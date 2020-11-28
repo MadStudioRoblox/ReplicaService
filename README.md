@@ -5,7 +5,7 @@ ReplicaService is a selective state replication system.
 ReplicaService helps you make server-side code to control and replicate any state to all
 clients or only a select few.
 
-A state (in layman's terms, a lua table that may contain almost anything) is wrapped with a `Replica` - like the name inplies,
+A state (in layman's terms, a lua table that may contain almost anything) is wrapped with a `Replica` - like the name implies,
 it creates a replica of the wrapped state which is sent to desired clients. You may define clients who will see that replica,
 call mutator functions on the `Replica` to change the state (will change contents of the wrapped table) and make the clients
 listen to those changes or simply read the state whenever necessary. Furthermore, a `Replica` can be parented to another
