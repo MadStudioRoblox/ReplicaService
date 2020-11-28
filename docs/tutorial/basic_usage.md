@@ -6,3 +6,5 @@ The code below is a basic profile loader implementation for ProfileService:
 	Unlike most custom DataStore modules where you would listen for `Players.PlayerRemoving` to clean up,
 	ProfileService may release (destroy) the profile before the player leaves the server - this has to be
 	handled by using `Profile:ListenToRelease(listener_function)` - any amount of functions can be added!
+
+a
