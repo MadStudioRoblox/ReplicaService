@@ -27,3 +27,13 @@ Testing is still important - write your own type checking as you see fit.
 If anything is missing or broken, [file an issue on GitHub](https://github.com/MadStudioRoblox/ReplicaService/issues).
 
 If you need help integrating ReplicaService into your project, [join the discussion]().
+
+---
+*ReplicaService is part of the **Madwork** framework*
+*Developed by [loleris](https://twitter.com/LM_loleris)*
+
+***It's documented:***
+**[ReplicaService wiki](https://madstudioroblox.github.io/ReplicaService/)**
+
+***It's open source:***
+[Roblox library](https://www.roblox.com/library/6015318619/ReplicaService)

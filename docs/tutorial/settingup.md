@@ -5,7 +5,7 @@ ReplicaService is a collection of module scripts. Your goal is to make your proj
 
 ### Option #1: Get ReplicaService from the Roblox library
 
-   - Get the library model [here]()
+   - Get the library model [here](https://www.roblox.com/library/6015318619/ReplicaService)
    - Move all modules to the correct containers to match the image above
 
 ### Option #2: (Advanced users) Rojo

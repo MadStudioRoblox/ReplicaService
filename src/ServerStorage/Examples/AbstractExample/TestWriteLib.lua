@@ -2,6 +2,7 @@
 [Game]
 
 -[TestWriteLib]---------------------------------------
+	(AbstractExample)
 	
 --]]
 

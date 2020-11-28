@@ -18,7 +18,7 @@ What's good about ReplicaService:
 
 - **Go big and go small** - Create powerful replication systems with WriteLibs (state mutation functions) or
 use built-in mutators to change any value within a state.
-- **Go MMO** - ReplicaService selective replication allows you to easily subscribe users to game chunks / player owned houses
+- **MMO worthy** - ReplicaService selective replication allows you to easily subscribe users to game chunks / player owned houses
 that they are currently nearby / inside - You can make the client automatically load in the assets making up the replicated area
 as soon as it receives the Replica object.
 - **Low network usage** - ReplicaService only sends the whole state when the player first receives a replica.

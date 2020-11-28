@@ -2,6 +2,7 @@
 [Game]
 
 -[ReplicaTestClient]---------------------------------------
+	(AbstractExample)
 	Brief functionality test of ReplicaService; Client-side
 
 	TO RUN THIS TEST:
@@ -10,6 +11,10 @@
 			ReplicaTestClient -> StarterPlayerScripts
 			TestWriteLib -> ReplicatedStorage
 		(Only one test can be run at a time)
+
+	What happens:
+		Various data is randomly changed on the server and replicated to
+		all players in the game.
 		
 --]]
 
@@ -23,7 +28,7 @@ local ReplicaTestClient = {
 
 }
 
------ Loaded Services / Controllers & Modules -----
+----- Loaded Modules -----
 
 local ReplicaController = require(game:GetService("ReplicatedStorage"):WaitForChild("ReplicaController"))
 

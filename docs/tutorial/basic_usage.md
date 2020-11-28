@@ -1,10 +1,31 @@
-Most of the work with ProfileService is setting up your data loading code. Afterwards, data is read and written directly to the `Profile.Data` table without the nescessety to use any ProfileService method calls - you set up your own read / write functions, wrappers, classes with profiles as components, etc!
+This might not be the most useful, but it's the most basic implementation you can write with ReplicaService:
 
-The code below is a basic profile loader implementation for ProfileService:
+(`Script` ReplicaTest.server.lua)
+```lua
+local ReplicaService = require(game.ServerScriptService.ReplicaService)
 
-!!! note
-	Unlike most custom DataStore modules where you would listen for `Players.PlayerRemoving` to clean up,
-	ProfileService may release (destroy) the profile before the player leaves the server - this has to be
-	handled by using `Profile:ListenToRelease(listener_function)` - any amount of functions can be added!
+local test_replica = ReplicaService.NewReplica({
+	ClassToken = ReplicaService.NewClassToken("TestReplica"),
+	Data = {Value = 0},
+	Replication = "All",
+})
 
-a
+while wait(1) do
+	test_replica:SetValue({"Value"}, test_replica.Data.Value + 1)
+end
+```
+
+(`LocalScript` ReplicaTest.client.lua)
+```lua
+local ReplicaController = require(game.ReplicatedStorage.ReplicaController)
+
+ReplicaController.ReplicaOfClassCreated("TestReplica", function(replica)
+	print("TestReplica received! Value:", replica.Data.Value)
+	
+	replica:ListenToChange("Value", function(new_value)
+		print("Value changed:", new_value)
+	end)
+end)
+
+ReplicaController.RequestData()
+```
