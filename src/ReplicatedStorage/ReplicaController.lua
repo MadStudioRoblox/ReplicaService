@@ -10,8 +10,7 @@
 		being skipped. Fix pending.
 	
 	WARNING: Replica update listeners are not cleaned up automatically (e.g. when their value's parent table is set to nil)
-		unless the replica is destroyed. Either split one replica into several replicas or carefully manage listeners
-		with :Disconnect() to prevent memory leaks. Does not apply to destroyed replicas.
+		unless the replica is destroyed.
 	
 	Notice: Replicas are destroyed client-side when the server stops replicating the replica to the client or the
 		server destroys the replica completely. This means that the exact replica that was previously destroyed
@@ -359,22 +358,6 @@ local function StringPathToArray(path)
 	return path_array
 end
 
--- local function PerformCleanupTask(task)
--- 	if type(task) == "function" then
--- 		task()
--- 	elseif typeof(task) == "RBXScriptConnection" then
--- 		task:Disconnect()
--- 	elseif typeof(task) == "Instance" then
--- 		task:Destroy()
--- 	elseif type(task) == "table" then
--- 		if type(task.Destroy) == "function" then
--- 			task:Destroy()
--- 		elseif type(task.Disconnect) == "function" then
--- 			task:Disconnect()
--- 		end
--- 	end
--- end
-
 local function DestroyReplicaAndDescendantsRecursive(replica, not_first_in_stack)
 	-- Scan children replicas:
 	for _, child in ipairs(replica.Children) do
@@ -443,7 +426,7 @@ local function CleanTableListenerTable(disconnect_param)
 	end
 end
 
-local function CreateReplicaBranch(top_replica_id, replica_entries, created_replicas) --> created_replicas: {replica, ...}
+local function CreateReplicaBranch(replica_entries, created_replicas) --> created_replicas: {replica, ...}
 	-- Sorting replica entries:
 	-- replica_entries = {[replica_id_string] = {replica_class, replica_tags, data_table, parent_id / 0, write_lib_module / nil}, ...}
 	local sorted_replica_entries = {} -- {replica_class, replica_tags, data_table, parent_id / 0, write_lib_module / nil, replica_id}, ...}
@@ -454,7 +437,6 @@ local function CreateReplicaBranch(top_replica_id, replica_entries, created_repl
 	table.sort(sorted_replica_entries, function(a, b)
 		return a[6] < b[6]
 	end)
-	-- local top_replica
 	local waiting_for_parent = {} -- [parent_replica_id] = {replica, ...}
 	created_replicas = created_replicas or {}
 	for _, replica_entry in ipairs(sorted_replica_entries) do
@@ -519,10 +501,6 @@ local function CreateReplicaBranch(top_replica_id, replica_entries, created_repl
 				child_replica.Parent = replica
 			end
 		end
-		-- Grabbing top replica:
-		-- if replica_id == top_replica_id and parent == nil then
-		-- 	top_replica = replica
-		-- end
 	end
 	if next(waiting_for_parent) ~= nil then
 		-- An error occurred while replicating an replica branch.
@@ -1069,12 +1047,12 @@ rev_ReplicaCreate.OnClientEvent:Connect(function(param1, param2) -- (top_replica
 			return a[1] < b[1]
 		end)
 		for _, replica_branch_entry in ipairs(param1) do
-			CreateReplicaBranch(replica_branch_entry[1], replica_branch_entry[2], created_replicas)
+			CreateReplicaBranch(replica_branch_entry[2], created_replicas)
 		end
 	elseif param2[1] ~= nil then -- One replica data
-		CreateReplicaBranch(param1, {[tostring(param1)] = param2}, created_replicas)
+		CreateReplicaBranch({[tostring(param1)] = param2}, created_replicas)
 	else -- Creation data table
-		CreateReplicaBranch(param1, param2, created_replicas)
+		CreateReplicaBranch(param2, created_replicas)
 	end
 	-- Broadcasting replica creation:
 	table.sort(created_replicas, function(a, b)
