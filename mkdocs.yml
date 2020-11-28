@@ -1,0 +1,25 @@
+site_name: ReplicaService
+site_url: https://madstudioroblox.github.io/ReplicaService
+repo_name: MadStudioRoblox/ReplicaService
+repo_url: https://github.com/MadStudioRoblox/ReplicaService
+
+theme:
+  icon:
+    logo: material/lan-connect
+    repo: fontawesome/brands/git-alt
+  name: material
+  favicon: images/favicon.png
+  palette:
+    primary: "indigo"
+    accent: "indigo"
+
+nav:
+  - Home: index.md
+  - Tutorial:
+    - Setting up: tutorial/settingup.md
+    - Basic Usage: tutorial/basic_usage.md
+  - API: api.md
+
+markdown_extensions:
+  - admonition
+  - codehilite
