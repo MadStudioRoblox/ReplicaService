@@ -10,8 +10,7 @@
 		being skipped. Fix pending.
 	
 	WARNING: Replica update listeners are not cleaned up automatically (e.g. when their value's parent table is set to nil)
-		unless the replica is destroyed. Either split one god replica into several replicas or carefully manage listeners
-		with :Disconnect() to prevent memory leaks. Does not apply to destroyed replicas.
+		unless the replica is destroyed.
 	
 	Notice: Replicas are destroyed client-side when the server stops replicating the replica to the client or the
 		server destroys the replica completely. This means that the exact replica that was previously destroyed
