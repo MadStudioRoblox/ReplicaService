@@ -29,4 +29,4 @@ Testing is still important - write your own type checking as you see fit.
 
 If anything is missing or broken, [file an issue on GitHub](https://github.com/MadStudioRoblox/ReplicaService/issues).
 
-If you need help integrating ReplicaService into your project, [join the discussion]().
+If you need help integrating ReplicaService into your project, [join the discussion](https://devforum.roblox.com/t/replicate-your-states-with-replicaservice-networking-system/894736).
