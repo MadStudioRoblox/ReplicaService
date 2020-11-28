@@ -835,7 +835,9 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 	local replica_tags = replica_params.Tags or {}
 	local data_table = replica_params.Data or {}
 	
-	local replication_settings = replica_params.Replication
+	local replication_settings: Player | string | { -- Small type definition to ease the angry linter
+		[Player]: boolean
+	} = replica_params.Replication
 	
 	if type(class_token) ~= "table" or type(class_token.Class) ~= "string" then
 		error("[ReplicaService]: missing or invalid replica_params.ClassToken argument")

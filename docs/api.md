@@ -63,11 +63,11 @@ when immediate replication of individual nested replicas is not desirable.
 
 Server-side:
 ```lua
--- A valid usecase is when it is desired for clients to receive a
+-- A valid use case is when it is desired for clients to receive a
 --   replica structure with all children replicated together as
 --   opposed to the client first receiving a parent creation signal
 --   (with missing children at that moment) and child creation
---   signals coming in seperately:
+--   signals coming in separately:
 
 local UseTemporary = true -- Set to false to make the replicas be
 --   replicated separately
@@ -408,8 +408,8 @@ local WriteLib = {
     end
     return amount_taken
   end,
-  AddCoins = function(replica, coint_count)
-    replica:SetValue({"CoinsInside"}, replica.Data.CoinsInside + coint_count)
+  AddCoins = function(replica, coin_count)
+    replica:SetValue({"CoinsInside"}, replica.Data.CoinsInside + coin_count)
   end,
   TakeAllCoins = function() --> coins_taken
     local coins = replica.Data.CoinsInside

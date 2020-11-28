@@ -19,7 +19,7 @@ Select an example and move it's files accordingly:
 
 ![Running a test](../images/RunningInThe90s.jpg)
 
-It should work when you play solo (or online. or offline with multiple players).
+It should work when you play solo (or online, or offline with multiple players).
 Try joining with one player and then see what happens when you join with another player
 while running these tests.
 

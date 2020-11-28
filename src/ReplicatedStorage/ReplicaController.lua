@@ -10,7 +10,7 @@
 		being skipped. Fix pending.
 	
 	WARNING: Replica update listeners are not cleaned up automatically (e.g. when their value's parent table is set to nil)
-		unless the replica is destroyed. Either split one god replica into several replicas or carefully manage listeners
+		unless the replica is destroyed. Either split one replica into several replicas or carefully manage listeners
 		with :Disconnect() to prevent memory leaks. Does not apply to destroyed replicas.
 	
 	Notice: Replicas are destroyed client-side when the server stops replicating the replica to the client or the
@@ -359,21 +359,21 @@ local function StringPathToArray(path)
 	return path_array
 end
 
-local function PerformCleanupTask(task)
-	if type(task) == "function" then
-		task()
-	elseif typeof(task) == "RBXScriptConnection" then
-		task:Disconnect()
-	elseif typeof(task) == "Instance" then
-		task:Destroy()
-	elseif type(task) == "table" then
-		if type(task.Destroy) == "function" then
-			task:Destroy()
-		elseif type(task.Disconnect) == "function" then
-			task:Disconnect()
-		end
-	end
-end
+-- local function PerformCleanupTask(task)
+-- 	if type(task) == "function" then
+-- 		task()
+-- 	elseif typeof(task) == "RBXScriptConnection" then
+-- 		task:Disconnect()
+-- 	elseif typeof(task) == "Instance" then
+-- 		task:Destroy()
+-- 	elseif type(task) == "table" then
+-- 		if type(task.Destroy) == "function" then
+-- 			task:Destroy()
+-- 		elseif type(task.Disconnect) == "function" then
+-- 			task:Disconnect()
+-- 		end
+-- 	end
+-- end
 
 local function DestroyReplicaAndDescendantsRecursive(replica, not_first_in_stack)
 	-- Scan children replicas:
@@ -454,7 +454,7 @@ local function CreateReplicaBranch(top_replica_id, replica_entries, created_repl
 	table.sort(sorted_replica_entries, function(a, b)
 		return a[6] < b[6]
 	end)
-	local top_replica
+	-- local top_replica
 	local waiting_for_parent = {} -- [parent_replica_id] = {replica, ...}
 	created_replicas = created_replicas or {}
 	for _, replica_entry in ipairs(sorted_replica_entries) do
@@ -520,9 +520,9 @@ local function CreateReplicaBranch(top_replica_id, replica_entries, created_repl
 			end
 		end
 		-- Grabbing top replica:
-		if replica_id == top_replica_id and parent == nil then
-			top_replica = replica
-		end
+		-- if replica_id == top_replica_id and parent == nil then
+		-- 	top_replica = replica
+		-- end
 	end
 	if next(waiting_for_parent) ~= nil then
 		-- An error occured while replicating an replica branch.
