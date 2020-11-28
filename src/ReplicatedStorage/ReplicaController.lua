@@ -400,7 +400,7 @@ end
 local function CreateTableListenerPathIndex(replica, path_array, listener_type)
 	-- Getting listener table:
 	local listeners = replica._table_listeners
-	-- Getting and or creating the structure nescessary to index the path for the listened key:
+	-- Getting and or creating the structure necessary to index the path for the listened key:
 	for i = 1, #path_array do
 		local key_listeners = listeners[1][path_array[i]]
 		if key_listeners == nil then
@@ -525,7 +525,7 @@ local function CreateReplicaBranch(top_replica_id, replica_entries, created_repl
 		-- end
 	end
 	if next(waiting_for_parent) ~= nil then
-		-- An error occured while replicating an replica branch.
+		-- An error occurred while replicating an replica branch.
 		local error_string = "[ReplicaService]: BRANCH REPLICATION ERROR - Missing parents: "
 		for parent_replica_id, child_replicas in pairs(waiting_for_parent) do
 			error_string = error_string .. "[" .. tostring(parent_replica_id) .. "]: {"

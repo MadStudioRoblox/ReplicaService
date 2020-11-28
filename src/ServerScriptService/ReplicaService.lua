@@ -618,8 +618,8 @@ function Replica:SetParent(new_parent)
 		local new_creation_data = new_parent._creation_data
 		-- Create temporary creation data:
 		local temporary_creation_data = {} -- [string_id] = creation_data_of_one
-		ParseReplicaBranch(self, function(transfered_replica)
-			local replica_id_string = tostring(transfered_replica.Id)
+		ParseReplicaBranch(self, function(transferred_replica)
+			local replica_id_string = tostring(transferred_replica.Id)
 			temporary_creation_data[replica_id_string] = old_creation_data[replica_id_string]
 		end)
 		temporary_creation_data[tostring(replica_id)][4] = new_parent.Id
@@ -997,7 +997,7 @@ rev_ReplicaRequestData.OnServerEvent:Connect(function(player)
 		end
 	end
 	-- Make the client create all replicas that are initially replicated to the client;
-	-- Pack up and send intially replicated replicas:
+	-- Pack up and send initially replicated replicas:
 	local replica_package = {} -- {replica_id, creation_data}
 	for replica_id, replica in pairs(TopLevelReplicas) do
 		if replica._replication[player] ~= nil or replica._replication["All"] == true then
