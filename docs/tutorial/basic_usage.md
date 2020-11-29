@@ -22,10 +22,11 @@ local ReplicaController = require(game.ReplicatedStorage.ReplicaController)
 ReplicaController.ReplicaOfClassCreated("TestReplica", function(replica)
 	print("TestReplica received! Value:", replica.Data.Value)
 	
-	replica:ListenToChange("Value", function(new_value)
+	replica:ListenToChange({"Value"}, function(new_value)
 		print("Value changed:", new_value)
 	end)
 end)
 
-ReplicaController.RequestData()
+ReplicaController.RequestData() --This method should only be called once
+--   in the entire codebase! Read the documentation for more info.
 ```

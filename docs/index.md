@@ -1,31 +1,16 @@
 # Home
+ReplicaService is a selective state replication system. ReplicaService helps you make server code which changes and replicates any state to select clients.
 
-ReplicaService is a selective state replication system.
+Assume that a [state (Wikipedia)](https://en.wikipedia.org/wiki/State_(computer_science)) is any kind of data that has a present version and may also change at any time in the future, as many times as necessary. The data about a player which you load up during gameplay or save to the DataStore is a state. The color of a part, text shown on a users screen and furniture placed in a player owned house are all states - ReplicaService helps you make server-side code to control and replicate any state to all clients at once or only a select few.
 
-Assume that a [state (Wikipedia)](https://en.wikipedia.org/wiki/State_(computer_science)) is any kind of data that
-has a present version and may also change at any time in the future, as many times as necessary. The data about a player
-which you load up during gameplay or save to the DataStore is a state, the color of a part is a state, the message text displayed
-on the user screen is a state - ReplicaService helps you make server-side code to control and replicate any state to all
-clients or only a select few.
-
-A state (in layman's terms, a lua table that may contain almost anything) is wrapped with a `Replica` - like the name implies,
-it creates a replica of the wrapped state which is sent to desired clients. You may define clients who will see that replica,
-call mutator functions on the `Replica` to change the state (will change contents of the wrapped table) and make the clients
-listen to those changes or simply read the state whenever necessary. Furthermore, a `Replica` can be parented to another
-`Replica` (with a few exceptions discussed later), unloaded for select clients and, of course, destroyed.
+A state (in layman’s terms, a lua table that may contain almost anything) is wrapped with a Replica - like the name implies, it creates a [replica (identical copy)](https://en.wikipedia.org/wiki/Replica) of the wrapped state on the client-side of users you want to see that state. You may define clients who will see that replica, call mutator functions on the Replica to change the state (will change contents of the wrapped table) and make the clients listen to those changes or simply read the state whenever necessary. Furthermore, a Replica can be parented to another Replica (with a few exceptions discussed later), unloaded for select clients and, of course, destroyed.
 
 What's good about ReplicaService:
 
-- **Go big and go small** - Create powerful replication systems with WriteLibs (state mutation functions) or
-use built-in mutators to change any value within a state.
-- **MMO worthy** - ReplicaService selective replication allows you to easily subscribe users to game chunks / player owned houses
-that they are currently nearby / inside - You can make the client automatically load in the assets making up the replicated area
-as soon as it receives the Replica object.
-- **Low network usage** - ReplicaService only sends the whole state when the player first receives a replica.
-Afterwards only individual changes are sent.
-- **Just replication, whatever you need replicated** - ReplicaService does very little runtime typechecking which might be
-desirable for projects pushing the limits of the Roblox engine and convenient for people who want to get their hands dirty quick.
-Testing is still important - write your own type checking as you see fit.
+- **Go big, go small** - Create powerful replication systems with WriteLibs (state mutation functions) or use built-in mutators to change any value within a state.
+- **Chunks & player houses** - ReplicaService selective replication allows you to easily subscribe users to game chunks / player owned houses that they are currently nearby / inside - You can make the client automatically load in the assets needed for a replicated area as soon as the Replica object is received.
+- **Low network usage** - ReplicaService only sends the whole state when the player first receives a replica. Afterwards only individual changes are sent. Custom mutator functions can replicate infinitely massive changes to the state with just a few bytes of data sent.
+- **Just replication, whatever you need replicated** - The goal of ReplicaService is to truly streamline custom Roblox object replication without having it’s method list obscured with redundant features or features that give the module one too many concerns to tackle.
 
 If anything is missing or broken, [file an issue on GitHub](https://github.com/MadStudioRoblox/ReplicaService/issues).
 
