@@ -27,6 +27,6 @@ ReplicaController.ReplicaOfClassCreated("TestReplica", function(replica)
 	end)
 end)
 
-ReplicaController.RequestData() --This method should only be called once
+ReplicaController.RequestData() -- This function should only be called once
 --   in the entire codebase! Read the documentation for more info.
 ```
