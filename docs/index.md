@@ -7,10 +7,13 @@ A state (in layman’s terms, a lua table that may contain almost anything) is w
 
 What's good about ReplicaService:
 
-- **Go big, go small** - Create powerful replication systems with WriteLibs (state mutation functions) or use built-in mutators to change any value within a state.
-- **Chunks & player houses** - ReplicaService selective replication allows you to easily subscribe users to game chunks / player owned houses that they are currently nearby / inside - You can make the client automatically load in the assets needed for a replicated area as soon as the Replica object is received.
-- **Low network usage** - ReplicaService only sends the whole state when the player first receives a replica. Afterwards only individual changes are sent. Custom mutator functions can replicate infinitely massive changes to the state with just a few bytes of data sent.
-- **Just replication, whatever you need replicated** - The goal of ReplicaService is to truly streamline custom Roblox object replication without having it’s method list obscured with redundant features or features that give the module one too many concerns to tackle.
+- **Just replication, whatever you need replicated** - The goal of ReplicaService is to streamline custom Roblox object replication from server to client. ReplicaService avoids being redundant and tackles as few concerns as possible.
+
+- **Chunks & player houses** - Selective replication allows you to make a "custom [StreamingEnabled](https://developer.roblox.com/en-us/articles/content-streaming) implementation" with full server-side control - load in nearby chunks, load in interiors and furniture only when the player enters those areas!
+
+- **"It don't go brrrrr"** - ReplicaService is completely event-based and only tells the client the data that changes - it keeps the network usage low and conserves computer resources.
+
+- **Go big, go small** - Use custom mutators for minimal bandwith and gain access to client-side listeners that react to bulk changes instead of individual values. Use built-in mutators for rapid implementations while still keeping your network use very low.
 
 If anything is missing or broken, [file an issue on GitHub](https://github.com/MadStudioRoblox/ReplicaService/issues).
 
