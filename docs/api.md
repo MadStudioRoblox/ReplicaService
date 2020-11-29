@@ -213,7 +213,7 @@ Requests the server to start sending replica data.
 **should be connected before calling `.RequestData()`! - refrain from connecting**
 **listeners afterwards!**
 
-If your game has local scripts that need to interact with
+If your game has local scripts that may run later during gameplay and they will need to interact with
 replicas, you should create a centralized module that connects `Replica` creation listeners before `.RequestData()`
 and provides those local scripts with the replica references they need.
 
