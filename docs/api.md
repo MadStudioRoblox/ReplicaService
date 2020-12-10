@@ -161,7 +161,7 @@ exclusive.
 ```lua
 ReplicaController.NewReplicaSignal   [ScriptSignal] (replica)
 ```
-Fired every time an replica is created client-side.
+Fired every time a replica is created client-side.
 ```lua
 ReplicaController.NewReplicaSignal:Connect(function(replica)
   print("Replica created:", replica:Identify())
