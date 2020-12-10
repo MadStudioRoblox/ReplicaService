@@ -280,10 +280,8 @@ do
 		local path_array = (type(path) == "string") and StringPathToArray(path) or path
 		local replica = self
 		-- Getting path pointer and listener table:
-		local pointer = replica.Data
 		local listeners = replica._table_listeners
 		for i = 1, #path_array do
-			pointer = pointer[path_array[i]]
 			if listeners ~= nil then
 				listeners = listeners[1][path_array[i]]
 			end
@@ -308,10 +306,8 @@ do
 		local path_array = (type(path) == "string") and StringPathToArray(path) or path
 		local replica = self
 		-- Getting path pointer and listener table:
-		local pointer = replica.Data
 		local listeners = replica._table_listeners
 		for i = 1, #path_array do
-			pointer = pointer[path_array[i]]
 			if listeners ~= nil then
 				listeners = listeners[1][path_array[i]]
 			end
