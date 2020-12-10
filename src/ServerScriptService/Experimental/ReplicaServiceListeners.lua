@@ -36,7 +36,7 @@ local ReplicaServiceListeners = {
 
 }
 
------ Loaded Services / Controllers & Modules -----
+----- Loaded Modules -----
 
 local ReplicaService = require(game:GetService("ServerScriptService"):FindFirstChild("ReplicaService", true))
 
@@ -351,12 +351,12 @@ do
 	-- Listener methods:
 	function Replica:ListenToChange(path, listener) --> [ScriptConnection] listener(new_value)
 		if type(listener) ~= "function" then
-			error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToChange()")
+			error("[ReplicaService]: Only a function can be set as listener in Replica:ListenToChange()")
 		end
 
 		local path_array = (type(path) == "string") and StringPathToArray(path) or path
 		if #path_array < 1 then
-			error("[ReplicaController]: Passed empty path - a value key must be specified")
+			error("[ReplicaService]: Passed empty path - a value key must be specified")
 		end
 		-- Getting listener table for given path:
 		local listeners = CreateTableListenerPathIndex(self, path_array, 2)
@@ -367,7 +367,7 @@ do
 
 	function Replica:ListenToNewKey(path, listener) --> [ScriptConnection] listener(new_value, new_key)
 		if type(listener) ~= "function" then
-			error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToNewKey()")
+			error("[ReplicaService]: Only a function can be set as listener in Replica:ListenToNewKey()")
 		end
 
 		local path_array = (type(path) == "string") and StringPathToArray(path) or path
@@ -384,7 +384,7 @@ do
 
 	function Replica:ListenToArrayInsert(path, listener) --> [ScriptConnection] listener(new_value, new_index)
 		if type(listener) ~= "function" then
-			error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToArrayInsert()")
+			error("[ReplicaService]: Only a function can be set as listener in Replica:ListenToArrayInsert()")
 		end
 
 		local path_array = (type(path) == "string") and StringPathToArray(path) or path
@@ -401,7 +401,7 @@ do
 
 	function Replica:ListenToArraySet(path, listener) --> [ScriptConnection] listener(new_value, index)
 		if type(listener) ~= "function" then
-			error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToArraySet()")
+			error("[ReplicaService]: Only a function can be set as listener in Replica:ListenToArraySet()")
 		end
 
 		local path_array = (type(path) == "string") and StringPathToArray(path) or path
@@ -418,7 +418,7 @@ do
 
 	function Replica:ListenToArrayRemove(path, listener) --> [ScriptConnection] listener(old_value, old_index)
 		if type(listener) ~= "function" then
-			error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToArrayRemove()")
+			error("[ReplicaService]: Only a function can be set as listener in Replica:ListenToArrayRemove()")
 		end
 
 		local path_array = (type(path) == "string") and StringPathToArray(path) or path
@@ -435,16 +435,16 @@ do
 
 	function Replica:ListenToWrite(function_name, listener) --> [ScriptConnection] listener(params...)
 		if type(listener) ~= "function" then
-			error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToWrite()")
+			error("[ReplicaService]: Only a function can be set as listener in Replica:ListenToWrite()")
 		end
 		if self._write_lib == nil then
-			error("[ReplicaController]: _write_lib was not declared for this replica")
+			error("[ReplicaService]: _write_lib was not declared for this replica")
 		end
 
 		local func_id = self._write_lib[function_name]
 		func_id = func_id and func_id[1]
 		if func_id == nil then
-			error("[ReplicaController]: Write function \"" .. function_name .. "\" not declared inside _write_lib of this replica")
+			error("[ReplicaService]: Write function \"" .. function_name .. "\" not declared inside _write_lib of this replica")
 		end
 
 		-- Getting listener table for given path:
