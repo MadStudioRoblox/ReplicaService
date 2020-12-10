@@ -248,6 +248,8 @@ local ReplicaService = {
 		--]]
 	},
 	
+	_replica_class = nil, -- Injection hook
+	
 }
 
 ----- Loaded Services & Modules -----
@@ -395,6 +397,7 @@ end
 
 local Replica = {}
 Replica.__index = Replica
+ReplicaService._replica_class = Replica
 
 -- Dictionaries:
 function Replica:SetValue(path, value)
@@ -574,23 +577,6 @@ function Replica:FireAllClients(...)
 end
 
 -- Inheritance:
-
---[[
-local function ParseReplicaBranch(replica, func) -- func(replica)
-	func(replica)
-	for _, child in ipairs(replica.Children) do
-		ParseReplicaBranch(child, func)
-		func(child)
-	end
-end
-
-local function ParseAllAncestors(parent, func) -- func(replica)
-	while parent ~= nil do
-		func(parent)
-		parent = parent.Parent
-	end
-end
---]]
 
 function Replica:SetParent(new_parent)
 	assert(type(new_parent) == "table", "[ReplicaService]: Invalid parent_replica")
