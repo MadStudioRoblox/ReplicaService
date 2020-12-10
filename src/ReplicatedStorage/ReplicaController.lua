@@ -583,7 +583,7 @@ local function ReplicaSetValues(replica_id, path_array, values)
 					end
 				end
 			end
-			local listeners = listeners[1][key]
+			listeners = listeners[1][key]
 			if listeners ~= nil then
 				if listeners[2] ~= nil then -- "Change" listeners
 					for _, listener in ipairs(listeners[2]) do
