@@ -1,5 +1,5 @@
 ReplicaService is a collection of module scripts. Your goal is to make your project have these files in the correct containers
-("Examples" folder is optional):
+("Experimental" and "Examples" folders are optional):
 
 ![Correct setup](../images/HowItsMade.jpg)
 
