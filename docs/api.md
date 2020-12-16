@@ -44,9 +44,9 @@ make more efficient decisions in solving your problems.
 When a replica reference is received through `.NewReplicaSignal` or `.ReplicaOfClassCreated()`,
 ReplicaController provides these guarantees:
 
--   Whenever any replica is received client-side, all children of that replica at the moment
-      of replication (Parent set in `replica_params` or [:ReplicateFor()](#replicareplicatefor)) will
-      be accessible on the client-side!
+-   Whenever any replica is received client-side, all descendants (all children & children of children)
+      of that replica at the moment of replication (Parent set in `replica_params` or [:ReplicateFor()](#replicareplicatefor))
+      will be accessible on the client-side!
 -   When the client receives first data or receives selective replication of a top level replica,
 			`.NewReplicaSignal` and `.ReplicaOfClassCreated()` will be fired for all replicas in the
       order they were created server-side from earliest to latest ([Replica.Id](#replicaid)
