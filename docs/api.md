@@ -35,6 +35,26 @@ function_name   [string] "Currency.AddCoins" -- Use dots to separate multiple ke
 --   replicas into several, smaller replicas with fewer concerns
 ```
 
+## Guarantees
+
+ReplicaService and ReplicaController perform all tasks and fire all new replica signals one at
+a time, one after another (sequential execution). Understanding the order of execution can help you
+make more efficient decisions in solving your problems.
+
+When a replica reference is received through `.NewReplicaSignal` or `.ReplicaOfClassCreated()`,
+ReplicaController provides these guarantees:
+
+-   Whenever any replica is received client-side, all children of that replica at the moment
+      of replication (Parent set in `replica_params` or [:ReplicateFor()](#replicareplicatefor)) will
+      be accessible on the client-side!
+-   When the client receives first data or receives selective replication of a top level replica,
+			`.NewReplicaSignal` and `.ReplicaOfClassCreated()` will be fired for all replicas in the
+      order they were created server-side from earliest to latest ([Replica.Id](#replicaid)
+      reflects this order). E.g. Creating `"replica1"` and then `"replica2"` in this order
+      server-side will make all clients create (and fire `.NewReplicaSignal` and `.ReplicaOfClassCreated()` for)
+      these replicas in the exact order assuming they are replicated to all players or are descendants
+      of the same top level replica at the moment of replication.
+
 ## ReplicaService
 ### ReplicaService.ActivePlayers
 ```lua
@@ -157,16 +177,6 @@ exclusive.
 
 ## ReplicaController
 
-### ReplicaController.NewReplicaSignal
-```lua
-ReplicaController.NewReplicaSignal   [ScriptSignal] (replica)
-```
-Fired every time a replica is created client-side.
-```lua
-ReplicaController.NewReplicaSignal:Connect(function(replica)
-  print("Replica created:", replica:Identify())
-end)
-```
 ### ReplicaController.InitialDataReceivedSignal
 ```lua
 ReplicaController.InitialDataReceivedSignal   [ScriptSignal]()
@@ -189,15 +199,17 @@ ReplicaController.ReplicaOfClassCreated("Flower", function(replica)
     print(replica.Class == "Flower") --> true
 end)
 ```
-This is the preferred method of grabbing references to all replicas. When a replica reference is received
-through `.NewReplicaSignal` or `.ReplicaOfClassCreated()`, ReplicaController provides two guarantees:
-
--   When the client receives first data, replica references received will
-			have all nested replicas already loaded and accessible through `Replica.Children`
--   When the client receives first data or receives selective replication of a top level replica,
-			`.NewReplicaSignal` and `.ReplicaOfClassCreated()` will be fired for all replicas in the
-      order they were created server-side from earliest to latest
-		
+This is the preferred method of grabbing references to all replicas clients-side.
+### ReplicaController.NewReplicaSignal
+```lua
+ReplicaController.NewReplicaSignal   [ScriptSignal] (replica)
+```
+Fired every time a replica is created client-side.
+```lua
+ReplicaController.NewReplicaSignal:Connect(function(replica)
+  print("Replica created:", replica:Identify())
+end)
+```
 ### ReplicaController.GetReplicaById()
 ```lua
 ReplicaController.GetReplicaById(replica_id) --> [Replica] or nil
