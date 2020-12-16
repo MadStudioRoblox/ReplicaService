@@ -499,6 +499,7 @@ local function CreateReplicaBranch(replica_entries, created_replicas) --> create
 			waiting_for_parent[replica_id] = nil
 			for _, child_replica in ipairs(children_waiting) do
 				child_replica.Parent = replica
+				table.insert(replica.Children, child_replica)
 			end
 		end
 	end

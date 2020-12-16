@@ -597,6 +597,8 @@ function Replica:SetParent(new_parent)
 	end
 	local replica_id = self.Id
 	self.Parent = new_parent
+	table.remove(old_parent.Children, table.find(old_parent.Children, self))
+	table.insert(new_parent.Children, self)
 	local old_replication = old_parent._replication
 	local new_replication = new_parent._replication
 	if old_replication ~= new_replication then -- Top level ancestor changed:
