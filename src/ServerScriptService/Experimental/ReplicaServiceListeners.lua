@@ -13,7 +13,7 @@
 	
 	Injected methods [Replica]:
 	
-		Replica:ListenToChange(path, listener) --> [ScriptConnection] (new_value)
+		Replica:ListenToChange(path, listener) --> [ScriptConnection] (new_value, old_value)
 		Replica:ListenToNewKey(path, listener) --> [ScriptConnection] (new_value, new_key)
 		Replica:ListenToArrayInsert(path, listener) --> [ScriptConnection] (new_index, new_value)
 		Replica:ListenToArraySet(path, listener) --> [ScriptConnection] (index, new_value)
@@ -190,7 +190,7 @@ do
 			if listeners ~= nil then
 				if listeners[2] ~= nil then -- "Change" listeners
 					for _, listener in ipairs(listeners[2]) do
-						listener(value)
+						listener(value, old_value)
 					end
 				end
 			end
@@ -231,7 +231,7 @@ do
 				if listeners ~= nil then
 					if listeners[2] ~= nil then -- "Change" listeners
 						for _, listener in ipairs(listeners[2]) do
-							listener(value)
+							listener(value, old_value)
 						end
 					end
 				end

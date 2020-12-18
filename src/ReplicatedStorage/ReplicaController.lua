@@ -51,7 +51,7 @@
 	Methods [Replica]:
 		
 	-- Dictionary update listening: (listener functions can't yield)
-		Replica:ListenToChange(path, listener) --> [ScriptConnection] (new_value)
+		Replica:ListenToChange(path, listener) --> [ScriptConnection] (new_value, old_value)
 		Replica:ListenToNewKey(path, listener) --> [ScriptConnection] (new_value, new_key)
 		
 		* Notice: When Replica:SetValues(path, values) is used server-side, Replica:ListenToChange() and Replica:ListenToNewKey()
@@ -548,7 +548,7 @@ local function ReplicaSetValue(replica_id, path_array, value)
 		if listeners ~= nil then
 			if listeners[2] ~= nil then -- "Change" listeners
 				for _, listener in ipairs(listeners[2]) do
-					listener(value)
+					listener(value, old_value)
 				end
 			end
 		end
@@ -588,7 +588,7 @@ local function ReplicaSetValues(replica_id, path_array, values)
 			if listeners ~= nil then
 				if listeners[2] ~= nil then -- "Change" listeners
 					for _, listener in ipairs(listeners[2]) do
-						listener(value)
+						listener(value, old_value)
 					end
 				end
 			end

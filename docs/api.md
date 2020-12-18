@@ -586,7 +586,7 @@ Listens to WriteLib mutator functions being triggered. See [WriteLib](#writelib)
 #### Replica:ListenToChange()
 ```lua
 Replica:ListenToChange(path, listener) --> [ScriptConnection]
---   listener   [function] (new_value)
+--   listener   [function] (new_value, old_value)
 ```
 Creates a listener which gets triggered by `Replica:SetValue()` calls.
 #### Replica:ListenToNewKey() 
