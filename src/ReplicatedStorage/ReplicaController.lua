@@ -226,7 +226,7 @@ local ReplicaController = {
 		--]]
 	},
 	
-	_class_listeners = {}, -- {["replica_class"] = {listener, ...}, ...}
+	_class_listeners = {}, -- {["replica_class"] = script_signal, ...}
 	_child_listeners = {}, -- {[replica_id] = {listener, ...}, ...}
 	
 }
@@ -273,7 +273,7 @@ local Replica
 local Replicas = ReplicaController._replicas
 local NewReplicaSignal = ReplicaController.NewReplicaSignal
 
-local ClassListeners = ReplicaController._class_listeners -- {["replica_class"] = {listener, ...}, ...}
+local ClassListeners = ReplicaController._class_listeners -- {["replica_class"] = script_signal, ...}
 local ChildListeners = ReplicaController._child_listeners -- {[replica_id] = {listener, ...}, ...}
 
 local rev_ReplicaRequestData = Madwork.SetupRemoteEvent("Replica_ReplicaRequestData")   -- Fired client-side when the client loads for the first time
@@ -953,14 +953,17 @@ function ReplicaController.ReplicaOfClassCreated(replica_class, listener) --> [S
 		error("[ReplicaController]: Only a function can be set as listener in ReplicaController.ReplicaOfClassCreated()")
 	end
 	-- Getting listener table for replica class:
-	local listeners = ClassListeners[replica_class]
-	if listeners == nil then
-		listeners = {}
-		ClassListeners[replica_class] = listeners
+	local signal = ClassListeners[replica_class]
+	if signal == nil then
+		signal = Madwork.NewScriptSignal()
+		ClassListeners[replica_class] = signal
 	end
-	table.insert(listeners, listener)
-	-- ScriptConnection which allows the disconnection of the listener:
-	return Madwork.NewArrayScriptConnection(listeners, listener)
+	return signal:Connect(listener, function()
+		-- Cleanup script signals that are no longer used:
+		if signal:GetListenerCount() == 0 and ClassListeners[replica_class] == signal then
+			ClassListeners[replica_class] = nil
+		end
+	end)
 end
 
 function ReplicaController.GetReplicaById(replica_id)
@@ -1074,11 +1077,9 @@ rev_ReplicaCreate.OnClientEvent:Connect(function(param1, param2) -- (top_replica
 	-- 2) New Replica and Replica of class created:
 	for _, replica in ipairs(created_replicas) do
 		NewReplicaSignal:Fire(replica)
-		local class_listener_table = ClassListeners[replica.Class]
-		if class_listener_table ~= nil then
-			for i = 1, #class_listener_table do
-				class_listener_table[i](replica)
-			end
+		local class_listener_signal = ClassListeners[replica.Class]
+		if class_listener_signal ~= nil then
+			class_listener_signal:Fire(replica)
 		end
 	end
 end)
