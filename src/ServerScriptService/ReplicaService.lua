@@ -563,7 +563,8 @@ function Replica:ConnectOnServerEvent(listener) --> [ScriptConnection]
 end
 
 function Replica:FireClient(player, ...)
-	if self._replication["All"] == true or self._replication[player] ~= nil then
+	if (self._replication["All"] == true and ActivePlayers[player] == true)
+		or self._replication[player] ~= nil then
 		rev_ReplicaSignal:FireClient(player, self.Id, ...)
 	end
 end
