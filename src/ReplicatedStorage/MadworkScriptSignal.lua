@@ -208,6 +208,7 @@ function MadworkScriptSignal.NewScriptSignal() --> [ScriptSignal]
 		_head_listener = nil,
 		_tail_listener = nil,
 		Connect = ScriptSignal.Connect,
+		GetListenerCount = ScriptSignal.GetListenerCount,
 		Fire = ScriptSignal.Fire
 	}
 end
