@@ -289,6 +289,9 @@ local WriteFunctionFlag = false
 
 local CreatedClassTokens = {} -- [class_name] = true
 
+local LockReplicaMethods = {} -- A metatable to be set for destroyed replicas
+LockReplicaMethods.__index = LockReplicaMethods
+
 ----- Private functions -----
 
 local function ParseReplicaBranch(replica, func) -- func(replica)
@@ -389,6 +392,8 @@ local function DestroyReplicaAndDescendantsRecursive(replica, not_first_in_stack
 			TopLevelReplicas[id] = nil
 		end
 	end
+	-- Swap metatables:
+	setmetatable(replica, LockReplicaMethods)
 end
 
 ----- Public functions -----
@@ -963,6 +968,28 @@ end
 
 ----- Initialize -----
 
+-- Creating LockReplicaMethods members:
+do
+	local keep_methods = {
+		Identify = true,
+		AddCleanupTask = true,
+		RemoveCleanupTask = true,
+		Destroy = true,
+	}
+	for method_name, func in pairs(Replica) do
+		if method_name ~= "__index" then
+			if keep_methods[method_name] == true then
+				LockReplicaMethods[method_name] = func
+			else
+				LockReplicaMethods[method_name] = function(self)
+					error("[ReplicaService]: Tried to call method \"" .. method_name .. "\" for a destroyed replica; " .. self:Identify())
+				end
+			end
+		end
+	end
+end
+
+-- Temporary replica:
 ReplicaService.Temporary = ReplicaService.NewReplica({
 	ClassToken = ReplicaService.NewClassToken("Temporary"),
 })
