@@ -240,16 +240,16 @@ local ReplicaService = {
 			...
 		--]]
 	},
-	
+
 	_top_level_replicas = { -- References to top level replicas for decreased load when handling new and leaving players
 		--[[
 			[replica_id] = Replica, -- [Replica]
 			...
 		--]]
 	},
-	
+
 	_replica_class = nil, -- Injection hook
-	
+
 }
 
 ----- Loaded Services & Modules -----
@@ -319,11 +319,11 @@ local function LoadWriteLib(write_lib_module)
 	if get_write_lib ~= nil then
 		return get_write_lib -- Write lib module was previously loaded
 	end
-	
+
 	if write_lib_module.ClassName ~= "ModuleScript" then
 		error("[ReplicaService]: Invalid write_lib_module argument")
 	end
-	
+
 	if write_lib_module:IsDescendantOf(ReplicatedStorage) == false then
 		local found_in_shared = false
 		for _, dir in pairs(Madwork.Shared) do
@@ -336,27 +336,27 @@ local function LoadWriteLib(write_lib_module)
 			error("[ReplicaService]: Write library module must be a descendant of ReplicatedStorage or \"Shared\" directory")
 		end
 	end
-	
+
 	local write_lib_raw = require(write_lib_module)
 	if type(write_lib_raw) ~= "table" then
 		error("[ReplicaService]: A write library ModuleScript must return a table")
 	end
-	
+
 	local function_list = {} -- func_id = {func_name, func}
-	
+
 	GetWriteLibFunctionsRecursive(function_list, write_lib_raw, "")
 	table.sort(function_list, function(item1, item2)
 		return item1[1] < item2[1] -- Sort functions by their names - this creates a consistent indexing on server and client-side
 	end)
-	
+
 	local write_lib = {} -- {["function_name"] = {func_id, function}, ...}
-	
+
 	for func_id, func_params in ipairs(function_list) do
 		write_lib[func_params[1]] = {func_id, func_params[2]}
 	end
-	
+
 	LoadedWriteLibs[write_lib_module] = write_lib
-	
+
 	return write_lib
 end
 
@@ -375,7 +375,7 @@ local function DestroyReplicaAndDescendantsRecursive(replica, not_first_in_stack
 	for _, child in ipairs(replica.Children) do
 		DestroyReplicaAndDescendantsRecursive(child, true)
 	end
-	
+
 	local id = replica.Id
 	-- Clear replica entry:
 	Replicas[id] = nil
@@ -615,6 +615,7 @@ function Replica:SetParent(new_parent)
 		ParseReplicaBranch(self, function(transfered_replica)
 			local replica_id_string = tostring(transfered_replica.Id)
 			temporary_creation_data[replica_id_string] = old_creation_data[replica_id_string]
+			transfered_replica._replication = new_replication -- Swapping _replication reference for reparented replicas
 		end)
 		temporary_creation_data[tostring(replica_id)][4] = new_parent.Id
 		-- Modify creation data for top replicas:
@@ -693,7 +694,7 @@ function Replica:ReplicateFor(param)
 	if Replicas[self.Id] == nil then
 		error("[ReplicaService]: Can't change replication settings for a destroyed replica")
 	end
-	
+
 	local replication = self._replication
 	local pending_replication = self._pending_replication
 	if replication["All"] ~= true then
@@ -740,7 +741,7 @@ function Replica:DestroyFor(param)
 	if Replicas[self.Id] == nil then
 		error("[ReplicaService]: Can't change replication settings for a destroyed replica")
 	end
-	
+
 	local replication = self._replication
 	if replication[param] ~= nil and ActivePlayers[param] == true then
 		-- Destroy replica for client:
@@ -828,9 +829,9 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 	local class_token = replica_params.ClassToken
 	local replica_tags = replica_params.Tags or {}
 	local data_table = replica_params.Data or {}
-	
+
 	local replication_settings = replica_params.Replication
-	
+
 	if type(class_token) ~= "table" or type(class_token.Class) ~= "string" then
 		error("[ReplicaService]: missing or invalid replica_params.ClassToken argument")
 	end
@@ -840,22 +841,22 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 	if type(data_table) ~= "table" then
 		error("[ReplicaService]: replica_params.Data must be a table")
 	end
-	
+
 	local replica_class = class_token.Class
-	
+
 	ReplicaIndex = ReplicaIndex + 1
-	
+
 	local parent = replica_params.Parent
 	local replication
 	local pending_replication
 	local creation_data
-	
+
 	if parent ~= nil then
 		if Replicas[parent.Id] == nil then
 			error("[ReplicaService]: Passed replica_params.Parent replica is destroyed")
 		end
 	end
-	
+
 	if parent ~= nil and replication_settings ~= nil then
 		error("[ReplicaService]: Can't set replica_params.Replication for a replica that has a parent")
 	elseif replication_settings == nil then
@@ -898,13 +899,13 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 			error("[ReplicaService]: Invalid value for replica_params.Replication (" .. tostring(replication_settings) .. ")")
 		end
 	end
-	
+
 	-- Load write_lib_module if present:
 	local write_lib = nil
 	if replica_params.WriteLib ~= nil then
 		write_lib = LoadWriteLib(replica_params.WriteLib)
 	end
-	
+
 	-- Getting references to parent replication and creation data:
 	if parent ~= nil then
 		replication = parent._replication
@@ -913,15 +914,15 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 	else
 		creation_data = {}
 	end
-	
+
 	local creation_data_of_one = {replica_class, replica_tags, data_table, (parent ~= nil) and parent.Id or 0, replica_params.WriteLib}
 	creation_data[tostring(ReplicaIndex)] = creation_data_of_one
-	
+
 	-- New Replica object table:
 	local replica = {
 		Data = data_table,
 		Id = ReplicaIndex,
-		
+
 		Class = replica_class,
 		Tags = replica_tags,
 		Parent = parent,
@@ -929,18 +930,18 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 		_creation_data = creation_data,
 		_replication = replication,
 		_pending_replication = pending_replication,
-				
+
 		_write_lib = write_lib,
-		
+
 		_signal_listeners = {},
 		_maid = MadworkMaid.NewMaid(),
 	}
 	setmetatable(replica, Replica)
-	
+
 	if parent ~= nil then
 		table.insert(parent.Children, replica)
 	end
-	
+
 	-- Replicating new replica:
 	if replication["All"] == true then
 		for player in pairs(ActivePlayers) do
@@ -951,7 +952,7 @@ function ReplicaService.NewReplica(replica_params) --> [Replica]
 			rev_ReplicaCreate:FireClient(player, ReplicaIndex, creation_data_of_one)
 		end
 	end
-	
+
 	-- Adding replica to replica list:
 	Replicas[ReplicaIndex] = replica
 	if parent == nil then
@@ -1002,7 +1003,7 @@ rev_ReplicaRequestData.OnServerEvent:Connect(function(player)
 	if ActivePlayers[player] ~= nil then
 		return
 	end
-	
+
 	-- Move player from pending replication to active replication
 	for replica_id, replica in pairs(TopLevelReplicas) do
 		if replica._pending_replication[player] ~= nil then
@@ -1033,7 +1034,7 @@ rev_ReplicaSignal.OnServerEvent:Connect(function(player, replica_id, ...)
 		or type(replica_id) ~= "number" then
 		return
 	end
-	
+
 	local replica = Replicas[replica_id]
 	if replica ~= nil then
 		if replica._replication[player] ~= nil or replica._replication["All"] == true then
