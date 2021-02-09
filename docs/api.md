@@ -403,6 +403,9 @@ Performs `table.remove(t, index)` where `t` is a numeric sequential array `table
     `os.clock()` to said value - `os.clock()` is always assumed to be a "desynchronized" value among all machinces and adding it to a synchronized value will
     desynchronize it. Due to Roblox physics being a partially locally simulated feature, desynchronization can also be done by using moving part position values.
 
+    You may still use `os.clock()` or part positions passed as initial write function parameters on server-side so the client may repeat write function operations with
+    identical function parameters.
+
     Keep it synchronized.
 
 
