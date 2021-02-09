@@ -2,11 +2,13 @@
     [Parameter limitations (developer.roblox.com)](https://developer.roblox.com/en-us/articles/Remote-Functions-and-Events#non-replicated-instances)
     apply to `Replica.Tags`, `Replica.Data`, `Replica:FireClient()`, `Replica:FireAllClients()` and `Replica:FireServer()`
 
-!!! warning
-    Never yield (use `wait()` or asynchronous Roblox API calls) inside listener functions
+!!! error
+    **DO NOT YIELD** (`wait()` or asynchronous tasks like `Instance:WaitForChild()`; Most methods / functions with `async` in their name) inside
+    [write functions](#writelib) or [listener functions](#client-replicacontroller) connected via `Replica:ListenToWrite()`, `Replica:ListenToChange()`, etc.
+    Yielding in these places will cause ReplicaService / ReplicaController to skip replication events and lose data synchronization.
 
 !!! notice
-    The `ReplicaController` and `ReplicaService` modules will yield if the internally included modules are not found immediately
+    The `ReplicaController` and `ReplicaService` modules will yield on `require()` if the internally included modules are not found immediately
 
 ## Common types
 
@@ -387,6 +389,22 @@ Replica:ArrayRemove(path, index) --> removed_value
 Performs `table.remove(t, index)` where `t` is a numeric sequential array `table` located in `path`.
 
 ### Custom mutators
+
+!!! error
+    Custom mutator functions **must execute identical data changes on server and client given the same function parameters** (Always assume
+    `Replica.Data` of all replicated replicas are identical on server and client-side at the time of a write function execution).
+    Implementing `RunService:IsServer()`, reading physical positions of parts or reading machine time (`os.clock()`, `tick()`, etc.)
+    within write functions may lead to `Replica.Data` desynchronization between server and client-side and a collapse of stable behaviour from further replicated
+    [delta-data](https://en.wikipedia.org/wiki/Delta_encoding).
+    
+    In Layman's terms, a desyncronized client can be asked
+    to add `1` to a value (Within `Replica.Data`, via a [write function](#writelib)) which is equal to `100` locally, but is equal to `101` on the server,
+    resulting in values `101` and `102` on client and server-side respectively. You may easily desynchronize machines by asking the server and client to add
+    `os.clock()` to said value - `os.clock()` is always assumed to be a "desynchronized" value among all machinces and adding it to a synchronized value will
+    desynchronize it. Due to Roblox physics being a partially locally simulated feature, desynchronization can also be done by using moving part position values.
+
+    Keep it synchronized.
+
 
 #### WriteLib
 A *WriteLib* is a `ModuleScript` containing a dictionary of mutator functions. When these functions are
