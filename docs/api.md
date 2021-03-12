@@ -417,7 +417,7 @@ number is replicated as a reference to that function.
 
 ***WriteLib example structure:***
 
-(`ModuleScript` WriteLib.lua - **Must be a descendant of ReplicatedStorage**)
+(`ModuleScript` WriteLib.lua - **Must be a descendant of a replicated instance / container (e.g. ReplicatedStorage)**)
 ```lua
 local WriteLib = {
   -- Mutator functions will receive the first parameter as the
