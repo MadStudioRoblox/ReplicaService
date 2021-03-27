@@ -270,6 +270,9 @@ local TopLevelReplicas = ReplicaService._top_level_replicas
 
 local rev_ReplicaRequestData = Madwork.SetupRemoteEvent("Replica_ReplicaRequestData")   -- Fired client-side when the client loads for the first time
 
+local rev_ReplicaIncrementValue = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValue")         -- (replica_id, {path}, value)
+local rev_ReplicaIncrementValues = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValues")
+
 local rev_ReplicaSetValue = Madwork.SetupRemoteEvent("Replica_ReplicaSetValue")         -- (replica_id, {path}, value)
 local rev_ReplicaSetValues = Madwork.SetupRemoteEvent("Replica_ReplicaSetValues")       -- (replica_id, {path}, {values})
 local rev_ReplicaArrayInsert = Madwork.SetupRemoteEvent("Replica_ReplicaArrayInsert")   -- (replica_id, {path}, value)
@@ -437,48 +440,23 @@ function Replica:IncrementValue(path, value)
 	end
 	assert(type(pointer[path_array[#path_array]]) == "number", "[ReplicaService] Tried to increment non-numeric value")
 	pointer[path_array[#path_array]] += value
+
+	local incrementedValue = pointer[path_array[#path_array]]
+	print('incrementedValue:', incrementedValue)
 	-- Replicate change:
 	if WriteFunctionFlag == false then
 		local id = self.Id
 		if self._replication["All"] == true then
 			for player in pairs(ActivePlayers) do
-				rev_ReplicaSetValue:FireClient(player, id, path_array, value)
+				rev_ReplicaIncrementValue:FireClient(player, id, path_array, value)
 			end
 		else
 			for player in pairs(self._replication) do
-				rev_ReplicaSetValue:FireClient(player, id, path_array, value)
+				rev_ReplicaIncrementValue:FireClient(player, id, path_array, value)
 			end
 		end
 	end
 end
-
-function Replica:SetValues(path, values)
-	local path_array = (type(path) == "string") and StringPathToArray(path) or path
-	-- Apply change server-side:
-	local pointer = self.Data
-	for i = 1, #path_array do
-		pointer = pointer[path_array[i]]
-	end
-	for key, value in pairs(values) do
-		if type(pointer[key]) == "number" then
-			pointer[key] += value
-		end
-	end
-	-- Replicate change:
-	if WriteFunctionFlag == false then
-		local id = self.Id
-		if self._replication["All"] == true then
-			for player in pairs(ActivePlayers) do
-				rev_ReplicaSetValues:FireClient(player, id, path_array, values)
-			end
-		else
-			for player in pairs(self._replication) do
-				rev_ReplicaSetValues:FireClient(player, id, path_array, values)
-			end
-		end
-	end
-end
-
 
 function Replica:SetValues(path, values)
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
@@ -500,6 +478,36 @@ function Replica:SetValues(path, values)
 		else
 			for player in pairs(self._replication) do
 				rev_ReplicaSetValues:FireClient(player, id, path_array, values)
+			end
+		end
+	end
+end
+
+function Replica:IncrementValues(path, values)
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	-- Apply change server-side:
+	local pointer = self.Data
+	for i = 1, #path_array do
+		pointer = pointer[path_array[i]]
+	end
+
+	local incrementedValues = {}
+	for key, value in pairs(values) do
+		if type(pointer[key]) == "number" then
+			pointer[key] += value
+			incrementedValues[key] = pointer[key]
+		end
+	end
+	-- Replicate change:
+	if WriteFunctionFlag == false then
+		local id = self.Id
+		if self._replication["All"] == true then
+			for player in pairs(ActivePlayers) do
+				rev_ReplicaIncrementValues:FireClient(player, id, path_array, incrementedValues)
+			end
+		else
+			for player in pairs(self._replication) do
+				rev_ReplicaIncrementValues:FireClient(player, id, path_array, incrementedValues)
 			end
 		end
 	end

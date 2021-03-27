@@ -278,6 +278,10 @@ local ChildListeners = ReplicaController._child_listeners -- {[replica_id] = {li
 
 local rev_ReplicaRequestData = Madwork.SetupRemoteEvent("Replica_ReplicaRequestData")   -- Fired client-side when the client loads for the first time
 
+local rev_ReplicaIncrementValue = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValue")         -- (replica_id, {path}, value)
+local rev_ReplicaIncrementValues = Madwork.SetupRemoteEvent("Replica_ReplicaIncrementValues")       -- (replica_id, {path}, {values})
+
+
 local rev_ReplicaSetValue = Madwork.SetupRemoteEvent("Replica_ReplicaSetValue")         -- (replica_id, {path}, value)
 local rev_ReplicaSetValues = Madwork.SetupRemoteEvent("Replica_ReplicaSetValues")       -- (replica_id, {path}, {values})
 local rev_ReplicaArrayInsert = Madwork.SetupRemoteEvent("Replica_ReplicaArrayInsert")   -- (replica_id, {path}, value)
@@ -559,6 +563,38 @@ local function ReplicaSetValue(replica_id, path_array, value)
 	end
 end
 
+local function ReplicaIncrementValue(replica_id, path_array, value)
+	local replica = Replicas[replica_id]
+	-- Getting path pointer and listener table:
+	local pointer = replica.Data
+	local listeners = replica._table_listeners
+	for i = 1, #path_array - 1 do
+		pointer = pointer[path_array[i]]
+		if listeners ~= nil then
+			listeners = listeners[1][path_array[i]]
+		end
+	end
+	-- Incrementing value:
+	local key = path_array[#path_array]
+	local old_value = pointer[key]
+	pointer[key] += value
+	-- Signaling listeners:
+	if old_value ~= value and listeners ~= nil then
+		listeners = listeners[1][path_array[#path_array]]
+		if listeners ~= nil then
+			if listeners[2] ~= nil then -- "Change" listeners
+				for _, listener in ipairs(listeners[2]) do
+					listener(pointer[key], old_value)
+				end
+			end
+		end
+	end
+	-- Raw listeners:
+	for _, listener in ipairs(replica._raw_listeners) do
+		listener("IncrementValue", path_array, pointer[key])
+	end
+end
+
 local function ReplicaSetValues(replica_id, path_array, values)
 	local replica = Replicas[replica_id]
 	-- Getting path pointer and listener table:
@@ -597,6 +633,42 @@ local function ReplicaSetValues(replica_id, path_array, values)
 	-- Raw listeners:
 	for _, listener in ipairs(replica._raw_listeners) do
 		listener("SetValues", path_array, values)
+	end
+end
+
+local function ReplicaIncrementValues(replica_id, path_array, values)
+	local replica = Replicas[replica_id]
+	-- Getting path pointer and listener table:
+	local pointer = replica.Data
+	local listeners = replica._table_listeners
+	for i = 1, #path_array do
+		pointer = pointer[path_array[i]]
+		if listeners ~= nil then
+			listeners = listeners[1][path_array[i]]
+		end
+	end
+	-- Incrementing values:
+	local incrementedValues = {}
+	for key, value in pairs(values) do
+		-- Increment value:
+		local old_value = pointer[key]
+		pointer[key] += value
+		incrementedValues[key] = pointer[key]
+		-- Signaling listeners:
+		if old_value ~= value and listeners ~= nil then
+			listeners = listeners[1][key]
+			if listeners ~= nil then
+				if listeners[2] ~= nil then -- "Change" listeners
+					for _, listener in ipairs(listeners[2]) do
+						listener(incrementedValues[key], old_value)
+					end
+				end
+			end
+		end
+	end
+	-- Raw listeners:
+	for _, listener in ipairs(replica._raw_listeners) do
+		listener("IncrementValues", path_array, incrementedValues)
 	end
 end
 
@@ -876,12 +948,28 @@ function Replica:SetValue(path, value)
 	ReplicaSetValue(self.Id, path_array, value)
 end
 
+function Replica:IncrementValue(path, value)
+	if WriteFunctionFlag == false then
+		error(SETTINGS.SetterError)
+	end
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	ReplicaIncrementValue(self.Id, path_array, value)
+end
+
 function Replica:SetValues(path, values)
 	if WriteFunctionFlag == false then
 		error(SETTINGS.SetterError)
 	end
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
 	ReplicaSetValues(self.Id, path_array, values)
+end
+
+function Replica:IncrementValues(path, values)
+	if WriteFunctionFlag == false then
+		error(SETTINGS.SetterError)
+	end
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	ReplicaIncrementValues(self.Id, path_array, values)
 end
 
 function Replica:ArrayInsert(path, value) --> new_index
@@ -983,6 +1071,11 @@ end)
 rev_ReplicaSetValue.OnClientEvent:Connect(ReplicaSetValue) -- (replica_id, {path}, value)
 
 rev_ReplicaSetValues.OnClientEvent:Connect(ReplicaSetValues) -- (replica_id, {path}, {values})
+
+rev_ReplicaIncrementValue.OnClientEvent:Connect(ReplicaIncrementValue) -- (replica_id, {path}, value)
+
+rev_ReplicaIncrementValues.OnClientEvent:Connect(ReplicaIncrementValues) -- (replica_id, {path}, {values})
+
 
 rev_ReplicaArrayInsert.OnClientEvent:Connect(ReplicaArrayInsert) -- (replica_id, {path}, value)
 
