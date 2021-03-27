@@ -428,6 +428,58 @@ function Replica:SetValue(path, value)
 	end
 end
 
+function Replica:IncrementValue(path, value)
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	-- Apply change server-side:
+	local pointer = self.Data
+	for i = 1, #path_array - 1 do
+		pointer = pointer[path_array[i]]
+	end
+	assert(type(pointer[path_array[#path_array]]) == "number", "[ReplicaService] Tried to increment non-numeric value")
+	pointer[path_array[#path_array]] += value
+	-- Replicate change:
+	if WriteFunctionFlag == false then
+		local id = self.Id
+		if self._replication["All"] == true then
+			for player in pairs(ActivePlayers) do
+				rev_ReplicaSetValue:FireClient(player, id, path_array, value)
+			end
+		else
+			for player in pairs(self._replication) do
+				rev_ReplicaSetValue:FireClient(player, id, path_array, value)
+			end
+		end
+	end
+end
+
+function Replica:SetValues(path, values)
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	-- Apply change server-side:
+	local pointer = self.Data
+	for i = 1, #path_array do
+		pointer = pointer[path_array[i]]
+	end
+	for key, value in pairs(values) do
+		if type(pointer[key]) == "number" then
+			pointer[key] += value
+		end
+	end
+	-- Replicate change:
+	if WriteFunctionFlag == false then
+		local id = self.Id
+		if self._replication["All"] == true then
+			for player in pairs(ActivePlayers) do
+				rev_ReplicaSetValues:FireClient(player, id, path_array, values)
+			end
+		else
+			for player in pairs(self._replication) do
+				rev_ReplicaSetValues:FireClient(player, id, path_array, values)
+			end
+		end
+	end
+end
+
+
 function Replica:SetValues(path, values)
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
 	-- Apply change server-side:
