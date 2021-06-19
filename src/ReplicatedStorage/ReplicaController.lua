@@ -624,7 +624,7 @@ local function ReplicaArrayInsert(replica_id, path_array, value) --> new_index
 	end
 	-- Raw listeners:
 	for _, listener in ipairs(replica._raw_listeners) do
-		listener("ArrayInsert", path_array, value)
+		listener("ArrayInsert", path_array, value, new_index)
 	end
 	return new_index
 end
