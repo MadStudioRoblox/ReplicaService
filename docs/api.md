@@ -649,7 +649,7 @@ Possible parameter reference for `Replica:ListenToRaw()`:
 ```lua
 -- ("SetValue", path_array, value)
 -- ("SetValues", path_array, values)
--- ("ArrayInsert", path_array, value)
+-- ("ArrayInsert", path_array, value, new_index)
 -- ("ArraySet", path_array, index, value)
 -- ("ArrayRemove", path_array, index, old_value)
 
