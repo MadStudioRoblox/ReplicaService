@@ -5,13 +5,16 @@
 
 	WARNING: .NewArrayScriptConnection() has undefined behaviour when listeners disconnect listeners within
 		"listener_table" before all listeners inside "listener_table" have been fired.
+		
+	WARNING #2: Always assume undefined listener invocation order for [ScriptSignal] class; Current implementation invokes
+		In the backwards order of connection time.
 
 	Functions:
 	
 		MadworkScriptSignal.NewArrayScriptConnection(listener_table, listener, disconnect_listener, disconnect_param) --> [ScriptConnection]
 			listener_table        [table]
 			listener              [function]
-			disconnect_listener   nil or [function]
+			disconnect_listener   nil or [function] -- Yield-safe
 			disconnect_param      nil or [value]
 			
 		MadworkScriptSignal.NewScriptSignal() --> [ScriptSignal]
@@ -20,12 +23,14 @@
 	
 		ScriptSignal:Connect(listener, disconnect_listener, disconnect_param) --> [ScriptConnection] listener(...) -- (listener functions can't yield)
 			listener              [function]
-			disconnect_listener   nil or [function]
+			disconnect_listener   nil or [function] -- Yield-safe
 			disconnect_param      nil or [value]
 			
 		ScriptSignal:GetListenerCount() --> [number]
 			
-		ScriptSignal:Fire(...)
+		ScriptSignal:Fire(...) -- Yield-safe
+		
+		ScriptSignal:FireUntil(continue_callback, ...) -- NOT YIELF-SAFE
 		
 	Methods [ScriptConnection]:
 	
@@ -36,10 +41,38 @@
 ----- Module Table -----
 
 local MadworkScriptSignal = {
-	
+
 }
 
------ Public functions -----
+----- Private variables -----
+
+local FreeRunnerThread = nil
+
+----- Private functions -----
+
+--[[
+	Yield-safe coroutine reusing by stravant;
+	Sources:
+	https://devforum.roblox.com/t/lua-signal-class-comparison-optimal-goodsignal-class/1387063
+	https://gist.github.com/stravant/b75a322e0919d60dde8a0316d1f09d2f
+--]]
+
+local function AcquireRunnerThreadAndCallEventHandler(fn, ...)
+	local acquired_runner_thread = FreeRunnerThread
+	FreeRunnerThread = nil
+	fn(...)
+	-- The handler finished running, this runner thread is free again.
+	FreeRunnerThread = acquired_runner_thread
+end
+
+local function RunEventHandlerInFreeThread(...)
+	AcquireRunnerThreadAndCallEventHandler(...)
+	while true do
+		AcquireRunnerThreadAndCallEventHandler(coroutine.yield())
+	end
+end
+
+----- Public -----
 
 -- ArrayScriptConnection object:
 
@@ -63,7 +96,10 @@ function ArrayScriptConnection:Disconnect()
 		self._listener = nil
 	end
 	if self._disconnect_listener ~= nil then
-		self._disconnect_listener(self._disconnect_param)
+		if not FreeRunnerThread then
+			FreeRunnerThread = coroutine.create(RunEventHandlerInFreeThread)
+		end
+		task.spawn(FreeRunnerThread, self._disconnect_listener, self._disconnect_param)
 		self._disconnect_listener = nil
 	end
 end
@@ -86,130 +122,112 @@ local ScriptConnection = {
 		_script_signal = script_signal,
 		_disconnect_listener = disconnect_listener,
 		_disconnect_param = disconnect_param,
+		
+		_next = next_script_connection,
+		_is_connected = is_connected,
 	--]]
 }
+ScriptConnection.__index = ScriptConnection
 
 function ScriptConnection:Disconnect()
-	local listener = self._listener
-	if listener ~= nil then
-		local script_signal = self._script_signal
-		local fire_pointer_stack = script_signal._fire_pointer_stack
-		local listeners_next = script_signal._listeners_next
-		local listeners_back = script_signal._listeners_back
-		-- Check fire pointers:
-		for i = 1, script_signal._stack_count do
-			if fire_pointer_stack[i] == listener then
-				fire_pointer_stack[i] = listeners_next[listener]
-			end
-		end
-		-- Remove listener:
-		if script_signal._tail_listener == listener then
-			local new_tail = listeners_back[listener]
-			if new_tail ~= nil then
-				listeners_next[new_tail] = nil
-				listeners_back[listener] = nil
-			else
-				script_signal._head_listener = nil -- tail was also head
-			end
-			script_signal._tail_listener = new_tail
-		elseif script_signal._head_listener == listener then
-			-- If this listener is not the tail, assume another listener is the tail:
-			local new_head = listeners_next[listener]
-			listeners_back[new_head] = nil
-			listeners_next[listener] = nil
-			script_signal._head_listener = new_head
-		else
-			local next_listener = listeners_next[listener]
-			local back_listener = listeners_back[listener]
-			if next_listener ~= nil or back_listener ~= nil then -- Catch cases when duplicate listeners are disconnected
-				listeners_next[back_listener] = next_listener
-				listeners_back[next_listener] = back_listener
-				listeners_next[listener] = nil
-				listeners_back[listener] = nil
-			end
-		end
-		self._listener = nil
-		script_signal._listener_count -= 1
+
+	if self._is_connected == false then
+		return
 	end
+
+	self._is_connected = false
+	self._script_signal._listener_count -= 1
+
+	if self._script_signal._head == self then
+		self._script_signal._head = self._next
+	else
+		local prev = self._script_signal._head
+		while prev ~= nil and prev._next ~= self do
+			prev = prev._next
+		end
+		if prev ~= nil then
+			prev._next = self._next
+		end
+	end
+
 	if self._disconnect_listener ~= nil then
-		self._disconnect_listener(self._disconnect_param)
+		if not FreeRunnerThread then
+			FreeRunnerThread = coroutine.create(RunEventHandlerInFreeThread)
+		end
+		task.spawn(FreeRunnerThread, self._disconnect_listener, self._disconnect_param)
 		self._disconnect_listener = nil
 	end
+
 end
 
 -- ScriptSignal object:
 
 local ScriptSignal = {
 	--[[
-		_fire_pointer_stack = {},
-		_stack_count = 0,
+		_head = nil,
 		_listener_count = 0,
-		_listeners_next = {}, -- [listener] = next_listener
-		_listeners_back = {}, -- [listener] = back_listener
-		_head_listener = nil,
-		_tail_listener = nil,
 	--]]
 }
+ScriptSignal.__index = ScriptSignal
 
 function ScriptSignal:Connect(listener, disconnect_listener, disconnect_param) --> [ScriptConnection]
-	if type(listener) ~= "function" then
-		error("[MadworkScriptSignal]: Only functions can be passed to ScriptSignal:Connect()")
-	end
-	local tail_listener = self._tail_listener
-	if tail_listener == nil then
-		self._head_listener = listener
-		self._tail_listener = listener
-		self._listener_count += 1
-	elseif tail_listener ~= listener and self._listeners_next[listener] == nil then -- Prevent connecting the same listener more than once
-		self._listeners_next[tail_listener] = listener
-		self._listeners_back[listener] = tail_listener
-		self._tail_listener = listener
-		self._listener_count += 1
-	end
-	return {
+
+	local script_connection = {
 		_listener = listener,
 		_script_signal = self,
 		_disconnect_listener = disconnect_listener,
 		_disconnect_param = disconnect_param,
-		Disconnect = ScriptConnection.Disconnect
+
+		_next = self._head,
+		_is_connected = true,
 	}
+	setmetatable(script_connection, ScriptConnection)
+
+	self._head = script_connection
+	self._listener_count += 1
+
+	return script_connection
+
 end
 
-function ScriptSignal:GetListenerCount()
+function ScriptSignal:GetListenerCount() --> [number]
 	return self._listener_count
 end
 
 function ScriptSignal:Fire(...)
-	local fire_pointer_stack = self._fire_pointer_stack
-	local stack_id = self._stack_count + 1
-	self._stack_count = stack_id
-	
-	local listeners_next = self._listeners_next
-	fire_pointer_stack[stack_id] = self._head_listener
-	while true do
-		local pointer = fire_pointer_stack[stack_id]
-		fire_pointer_stack[stack_id] = listeners_next[pointer]
-		if pointer ~= nil then
-			pointer(...)
-		else
-			break
+	local item = self._head
+	while item ~= nil do
+		if item._is_connected == true then
+			if not FreeRunnerThread then
+				FreeRunnerThread = coroutine.create(RunEventHandlerInFreeThread)
+			end
+			task.spawn(FreeRunnerThread, item._listener, ...)
 		end
+		item = item._next
 	end
-	self._stack_count -= 1
+end
+
+function ScriptSignal:FireUntil(continue_callback, ...)
+	local item = self._head
+	while item ~= nil do
+		if item._is_connected == true then
+			item._listener(...)
+			if continue_callback() ~= true then
+				return
+			end
+		end
+		item = item._next
+	end
 end
 
 function MadworkScriptSignal.NewScriptSignal() --> [ScriptSignal]
 	return {
-		_fire_pointer_stack = {},
-		_stack_count = 0,
+		_head = nil,
 		_listener_count = 0,
-		_listeners_next = {},
-		_listeners_back = {},
-		_head_listener = nil,
-		_tail_listener = nil,
 		Connect = ScriptSignal.Connect,
 		GetListenerCount = ScriptSignal.GetListenerCount,
-		Fire = ScriptSignal.Fire
+		Fire = ScriptSignal.Fire,
+		FireUntil = ScriptSignal.FireUntil,
 	}
 end
 

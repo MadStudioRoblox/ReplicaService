@@ -27,6 +27,9 @@
 		ReplicaService.RemovedActivePlayerSignal   [ScriptSignal] (player)
 		
 		ReplicaService.Temporary                   [Replica] -- Non replicated replica for nested replica creation
+		
+		ReplicaService.PlayerRequestedData         [ScriptSignal] (player) -- Fired at the moment of player requesting data, before
+			-- replicating any replicas
 	
 	Functions:
 	
@@ -109,8 +112,12 @@
 		Replica:Identify() --> [string]
 		
 	-- Cleanup:
+	
+		Replica:IsActive() --> is_active [bool] -- Returns false if the replica was destroyed
+	
 		Replica:AddCleanupTask(task) -- Add cleanup task to be performed
 		Replica:RemoveCleanupTask(task) -- Remove cleanup task
+		
 		Replica:Destroy() -- Destroys replica and all of its descendants (Depth-first)
 		
 			task:
@@ -127,7 +134,6 @@ local SETTINGS = {
 local Madwork -- Standalone Madwork reference for portable version of ReplicaService/ReplicaController
 do
 	local RunService = game:GetService("RunService")
-	local Heartbeat = RunService.Heartbeat
 
 	local function WaitForDescendant(ancestor, instance_name, warn_name)
 		local instance = ancestor:FindFirstChild(instance_name, true) -- Recursive
@@ -146,7 +152,7 @@ do
 					warn("[" .. script.Name .. "]: Missing " .. warn_name .. " \"" .. instance_name
 						.. "\" in " .. ancestor:GetFullName() .. "; Please check setup documentation")
 				end
-				Heartbeat:Wait()
+				task.wait()
 			end
 			connection:Disconnect()
 			return instance
@@ -182,18 +188,6 @@ do
 				return WaitForDescendant(RemoteEventContainer, remote_name, "remote event")
 			end
 		end,
-		HeartbeatWait = function(wait_time) --> time_elapsed
-			if wait_time == nil or wait_time == 0 then
-				return Heartbeat:Wait()
-			else
-				local time_elapsed = 0
-				while time_elapsed <= wait_time do
-					local time_waited = Heartbeat:Wait()
-					time_elapsed = time_elapsed + time_waited
-				end
-				return time_elapsed
-			end
-		end,
 		Shared = {}, -- A Madwork package reference - ReplicaService will try to check this table
 	}
 
@@ -209,6 +203,8 @@ local ReplicaService = {
 	ActivePlayers = {}, -- {Player = true, ...}
 	NewActivePlayerSignal = Madwork.NewScriptSignal(), -- (player)
 	RemovedActivePlayerSignal = Madwork.NewScriptSignal(), -- (player)
+	
+	PlayerRequestedData = Madwork.NewScriptSignal(), -- (player)
 
 	_replicas = {
 		--[[
@@ -254,7 +250,7 @@ local ReplicaService = {
 
 ----- Loaded Services & Modules -----
 
-local RateLimiter = require(Madwork.GetModule("Madwork", "RateLimiter"))
+local RateLimiter = require(Madwork.GetShared("Madwork", "RateLimiter"))
 local MadworkMaid = require(Madwork.GetShared("Madwork", "MadworkMaid"))
 
 ----- Private Variables -----
@@ -783,8 +779,13 @@ function Replica:Identify() --> [string]
 end
 
 -- Cleanup:
+
+function Replica:IsActive() --> is_active [bool]
+	return Replicas[self.Id] ~= nil
+end
+
 function Replica:AddCleanupTask(task)
-	self._maid:AddCleanupTask(task)
+	return self._maid:AddCleanupTask(task)
 end
 
 function Replica:RemoveCleanupTask(task)
@@ -977,6 +978,7 @@ do
 		AddCleanupTask = true,
 		RemoveCleanupTask = true,
 		Destroy = true,
+		IsActive = true,
 	}
 	for method_name, func in pairs(Replica) do
 		if method_name ~= "__index" then
@@ -1003,6 +1005,9 @@ rev_ReplicaRequestData.OnServerEvent:Connect(function(player)
 	if ActivePlayers[player] ~= nil then
 		return
 	end
+	
+	-- Provide the client with first server time reference:
+	ReplicaService.PlayerRequestedData:Fire(player)
 
 	-- Move player from pending replication to active replication
 	for replica_id, replica in pairs(TopLevelReplicas) do

@@ -10,7 +10,8 @@
 		being skipped. Fix pending.
 	
 	WARNING: Replica update listeners are not cleaned up automatically (e.g. when their value's parent table is set to nil)
-		unless the replica is destroyed.
+		unless the replica is destroyed. Either split one god replica into several replicas or carefully manage listeners
+		with :Disconnect() to prevent memory leaks. Does not apply to destroyed replicas.
 	
 	Notice: Replicas are destroyed client-side when the server stops replicating the replica to the client or the
 		server destroys the replica completely. This means that the exact replica that was previously destroyed
@@ -73,7 +74,7 @@
 		Replica:ListenToRaw(listener) --> [ScriptConnection] (action_name, path_array, params...)
 			-- ("SetValue", path_array, value)
 			-- ("SetValues", path_array, values)
-			-- ("ArrayInsert", path_array, value)
+			-- ("ArrayInsert", path_array, value, new_index)
 			-- ("ArraySet", path_array, index, value)
 			-- ("ArrayRemove", path_array, index, old_value)
 		
@@ -91,6 +92,9 @@
 		Replica:Identify() --> [string]
 		
 	-- Cleanup:
+	
+		Replica:IsActive() --> is_active [bool] -- Returns false if the replica was destroyed
+	
 		Replica:AddCleanupTask(task) -- Add cleanup task to be performed
 		Replica:RemoveCleanupTask(task) -- Remove cleanup task
 		
@@ -119,7 +123,6 @@ local SETTINGS = {
 local Madwork -- Standalone Madwork reference for portable version of ReplicaService/ReplicaController
 do
 	local RunService = game:GetService("RunService")
-	local Heartbeat = RunService.Heartbeat
 	
 	local function WaitForDescendant(ancestor, instance_name, warn_name)
 		local instance = ancestor:FindFirstChild(instance_name, true) -- Recursive
@@ -138,7 +141,7 @@ do
 					warn("[" .. script.Name .. "]: Missing " .. warn_name .. " \"" .. instance_name
 						.. "\" in " .. ancestor:GetFullName() .. "; Please check setup documentation")
 				end
-				Heartbeat:Wait()
+				task.wait()
 			end
 			connection:Disconnect()
 			return instance
@@ -172,18 +175,6 @@ do
 				return remote_event
 			else
 				return WaitForDescendant(RemoteEventContainer, remote_name, "remote event")
-			end
-		end,
-		HeartbeatWait = function(wait_time) --> time_elapsed
-			if wait_time == nil or wait_time == 0 then
-				return Heartbeat:Wait()
-			else
-				local time_elapsed = 0
-				while time_elapsed <= wait_time do
-					local time_waited = Heartbeat:Wait()
-					time_elapsed = time_elapsed + time_waited
-				end
-				return time_elapsed
 			end
 		end,
 		Shared = {}, -- A Madwork package reference - ReplicaService will try to check this table
@@ -225,10 +216,10 @@ local ReplicaController = {
 			}
 		--]]
 	},
-	
+
 	_class_listeners = {}, -- {["replica_class"] = script_signal, ...}
 	_child_listeners = {}, -- {[replica_id] = {listener, ...}, ...}
-	
+
 }
 
 --[[
@@ -262,7 +253,7 @@ local ReplicaController = {
 		}
 --]]
 
------ Loaded Controllers & Modules -----
+----- Loaded Modules -----
 
 local MadworkMaid = require(Madwork.GetShared("Madwork", "MadworkMaid"))
 
@@ -323,28 +314,28 @@ local function LoadWriteLib(write_lib_module)
 	if get_write_lib_pack ~= nil then
 		return get_write_lib_pack
 	end
-	
+
 	local write_lib_raw = require(write_lib_module)
-	
+
 	local function_list = {} -- func_id = {func_name, func}
-	
+
 	GetWriteLibFunctionsRecursive(function_list, write_lib_raw, "")
 	table.sort(function_list, function(item1, item2)
 		return item1[1] < item2[1] -- Sort functions by their names - this creates a consistent indexing on server and client-side
 	end)
-	
+
 	local write_lib = {} -- {[func_id] = function, ...}
 	local write_lib_dictionary = {} -- {["function_name"] = func_id, ...}
-	
+
 	for func_id, func_params in ipairs(function_list) do
 		write_lib[func_id] = func_params[2]
 		write_lib_dictionary[func_params[1]] = func_id
 	end
-	
+
 	local write_lib_pack = {write_lib, write_lib_dictionary}
-	
+
 	LoadedWriteLibPacks[write_lib_module] = write_lib_pack
-	
+
 	return write_lib_pack
 end
 
@@ -363,7 +354,7 @@ local function DestroyReplicaAndDescendantsRecursive(replica, not_first_in_stack
 	for _, child in ipairs(replica.Children) do
 		DestroyReplicaAndDescendantsRecursive(child, true)
 	end
-	
+
 	local id = replica.Id
 	-- Clear replica entry:
 	Replicas[id] = nil
@@ -392,7 +383,7 @@ local function CreateTableListenerPathIndex(replica, path_array, listener_type)
 		end
 		listeners = key_listeners
 	end
-	
+
 	local listener_type_table = listeners[listener_type]
 	if listener_type_table == nil then
 		listener_type_table = {}
@@ -464,17 +455,17 @@ local function CreateReplicaBranch(replica_entries, created_replicas) --> create
 			Id = replica_id,
 			Class = replica_entry[1],
 			Tags = replica_entry[2],
-		
+
 			Parent = parent,
 			Children = {},
-					
+
 			_write_lib = write_lib,
 			_write_lib_dictionary = write_lib_dictionary,
-			
+
 			_table_listeners = {[1] = {}},
 			_function_listeners = {},
 			_raw_listeners = {},
-			
+
 			_signal_listeners = {},
 			_maid = MadworkMaid.NewMaid(),
 		}
@@ -584,10 +575,10 @@ local function ReplicaSetValues(replica_id, path_array, values)
 					end
 				end
 			end
-			listeners = listeners[1][key]
-			if listeners ~= nil then
-				if listeners[2] ~= nil then -- "Change" listeners
-					for _, listener in ipairs(listeners[2]) do
+			local key_listeners = listeners[1][key]
+			if key_listeners ~= nil then
+				if key_listeners[2] ~= nil then -- "Change" listeners
+					for _, listener in ipairs(key_listeners[2]) do
 						listener(value, old_value)
 					end
 				end
@@ -624,7 +615,7 @@ local function ReplicaArrayInsert(replica_id, path_array, value) --> new_index
 	end
 	-- Raw listeners:
 	for _, listener in ipairs(replica._raw_listeners) do
-		listener("ArrayInsert", path_array, value)
+		listener("ArrayInsert", path_array, value, new_index)
 	end
 	return new_index
 end
@@ -696,7 +687,7 @@ function Replica:ListenToChange(path, listener) --> [ScriptConnection] listener(
 	if type(listener) ~= "function" then
 		error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToChange()")
 	end
-	
+
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
 	if #path_array < 1 then
 		error("[ReplicaController]: Passed empty path - a value key must be specified")
@@ -712,7 +703,7 @@ function Replica:ListenToNewKey(path, listener) --> [ScriptConnection] listener(
 	if type(listener) ~= "function" then
 		error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToNewKey()")
 	end
-	
+
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
 	-- Getting listener table for given path:
 	local listeners = CreateTableListenerPathIndex(self, path_array, 3)
@@ -729,7 +720,7 @@ function Replica:ListenToArrayInsert(path, listener) --> [ScriptConnection] list
 	if type(listener) ~= "function" then
 		error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToArrayInsert()")
 	end
-	
+
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
 	-- Getting listener table for given path:
 	local listeners = CreateTableListenerPathIndex(self, path_array, 4)
@@ -746,7 +737,7 @@ function Replica:ListenToArraySet(path, listener) --> [ScriptConnection] listene
 	if type(listener) ~= "function" then
 		error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToArraySet()")
 	end
-	
+
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
 	-- Getting listener table for given path:
 	local listeners = CreateTableListenerPathIndex(self, path_array, 5)
@@ -763,7 +754,7 @@ function Replica:ListenToArrayRemove(path, listener) --> [ScriptConnection] list
 	if type(listener) ~= "function" then
 		error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToArrayRemove()")
 	end
-	
+
 	local path_array = (type(path) == "string") and StringPathToArray(path) or path
 	-- Getting listener table for given path:
 	local listeners = CreateTableListenerPathIndex(self, path_array, 6)
@@ -783,12 +774,12 @@ function Replica:ListenToWrite(function_name, listener) --> [ScriptConnection] l
 	if self._write_lib == nil then
 		error("[ReplicaController]: _write_lib was not declared for this replica")
 	end
-	
+
 	local func_id = self._write_lib_dictionary[function_name]
 	if func_id == nil then
 		error("[ReplicaController]: Write function \"" .. function_name .. "\" not declared inside _write_lib of this replica")
 	end
-	
+
 	-- Getting listener table for given path:
 	local listeners = self._function_listeners[func_id]
 	if listeners == nil then
@@ -858,8 +849,13 @@ function Replica:Identify() --> [string]
 end
 
 -- Cleanup:
+
+function Replica:IsActive() --> is_active [bool]
+	return Replicas[self.Id] ~= nil
+end
+
 function Replica:AddCleanupTask(task)
-	self._maid:AddCleanupTask(task)
+	return self._maid:AddCleanupTask(task)
 end
 
 function Replica:RemoveCleanupTask(task)
@@ -931,18 +927,18 @@ function ReplicaController.RequestData() -- Call after all client controllers ar
 		return
 	end
 	DataRequestStarted = true
-	coroutine.wrap(function() -- In case the initial rev_ReplicaRequestData signal was lost (Highly unlikely)
+	task.spawn(function() -- In case the initial rev_ReplicaRequestData signal was lost (Highly unlikely)
 		while game:IsLoaded() == false do
-			Madwork.HeartbeatWait()
+			task.wait()
 		end
 		rev_ReplicaRequestData:FireServer()
-		while Madwork.HeartbeatWait(SETTINGS.RequestDataRepeat) do
+		while task.wait(SETTINGS.RequestDataRepeat) do
 			if ReplicaController.InitialDataReceived == true then
 				break
 			end
 			rev_ReplicaRequestData:FireServer()
 		end
-	end)()
+	end)
 end
 
 function ReplicaController.ReplicaOfClassCreated(replica_class, listener) --> [ScriptConnection] listener(replica)

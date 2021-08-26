@@ -62,6 +62,7 @@ local function PlayerAdded(player)
         "ForceLoad"
     )
     if profile ~= nil then
+		profile:AddUserId(player.UserId)
         profile:Reconcile()
 		profile:ListenToRelease(function()
 			PlayerProfiles[player].Replica:Destroy()

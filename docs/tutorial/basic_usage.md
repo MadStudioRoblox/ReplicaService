@@ -10,7 +10,7 @@ local test_replica = ReplicaService.NewReplica({
 	Replication = "All",
 })
 
-while wait(1) do
+while task.wait(1) do
 	test_replica:SetValue({"Value"}, test_replica.Data.Value + 1)
 end
 ```

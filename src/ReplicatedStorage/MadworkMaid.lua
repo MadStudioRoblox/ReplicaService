@@ -11,7 +11,7 @@
 	
 	Members [Maid]:
 	
-		Maid:AddCleanupTask(task)
+		Maid:AddCleanupTask(task) --> cleanup_of_one [function] (...) -- Returned function can be called to cleanup the individual task
 		Maid:RemoveCleanupTask(task)
 		Maid:Cleanup(params...)
 		
@@ -25,9 +25,35 @@ local MadworkMaid = {
 	
 }
 
+----- Private variables -----
+
+local FreeRunnerThread = nil
+
 ----- Private functions -----
 
-local function PerformCleanupTask(task, ...)
+--[[
+	Yield-safe coroutine reusing by stravant;
+	Sources:
+	https://devforum.roblox.com/t/lua-signal-class-comparison-optimal-goodsignal-class/1387063
+	https://gist.github.com/stravant/b75a322e0919d60dde8a0316d1f09d2f
+--]]
+
+local function AcquireRunnerThreadAndCallEventHandler(fn, ...)
+	local acquired_runner_thread = FreeRunnerThread
+	FreeRunnerThread = nil
+	fn(...)
+	-- The handler finished running, this runner thread is free again.
+	FreeRunnerThread = acquired_runner_thread
+end
+
+local function RunEventHandlerInFreeThread(...)
+	AcquireRunnerThreadAndCallEventHandler(...)
+	while true do
+		AcquireRunnerThreadAndCallEventHandler(coroutine.yield())
+	end
+end
+
+local function CleanupTask(task, ...)
 	if type(task) == "function" then
 		task(...)
 	elseif typeof(task) == "RBXScriptConnection" then
@@ -43,6 +69,13 @@ local function PerformCleanupTask(task, ...)
 	end
 end
 
+local function PerformCleanupTask(...)
+	if not FreeRunnerThread then
+		FreeRunnerThread = coroutine.create(RunEventHandlerInFreeThread)
+	end
+	task.spawn(FreeRunnerThread, CleanupTask, ...)
+end
+
 ----- Public functions -----
 
 -- Maid object:
@@ -56,8 +89,8 @@ Maid.__index = Maid
 function Maid:AddCleanupTask(task)
 	if self._is_cleaned == true then
 		PerformCleanupTask(task)
-	end
-	if type(task) == "function" then
+		return function() end
+	elseif type(task) == "function" then
 		table.insert(self._cleanup_tasks, task)
 	elseif typeof(task) == "RBXScriptConnection" then
 		table.insert(self._cleanup_tasks, task)
@@ -74,16 +107,23 @@ function Maid:AddCleanupTask(task)
 	else
 		error("[MadworkMaid]: Cleanup task of type \"" .. typeof(task) .. "\" not supported")
 	end
+	return function(...)
+		self:RemoveCleanupTask(task)
+		PerformCleanupTask(task, ...)
+	end
 end
 
 function Maid:RemoveCleanupTask(task)
 	local cleanup_tasks = self._cleanup_tasks
-	for i = 1, #cleanup_tasks do
-		if cleanup_tasks[i] == task then
-			table.remove(cleanup_tasks, i)
-			break
-		end
+	local index = table.find(cleanup_tasks, task)
+	if index ~= nil then
+		table.remove(cleanup_tasks, index)
 	end
+end
+
+function Maid:CleanupOfOne(task, ...)
+	self:RemoveCleanupTask(task)
+	PerformCleanupTask(task, ...)
 end
 
 function Maid:Cleanup(...)

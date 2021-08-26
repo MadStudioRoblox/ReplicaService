@@ -298,13 +298,18 @@ Reference to the parent `Replica`. All **nested replicas** *will* have a parent.
 Replica.Children   [table] -- (read-only) {replica, ...} 
 ```
 An array of replicas parented to this `Replica`.
+#### Replica:IsActive()
+```lua
+Replica:IsActive() --> is_active [bool]
+```
+Returns `false` if the `Replica` was destroyed.
 #### Replica:Identify()
 ```lua
 Replica:Identify() --> [string]
 ```
 Creates a brief string description of a `Replica`, excluding `Replica.Data` contents. Used for debug purposes.
 ```lua
-replica:Identify() --> "[Id:7;Class:Flower;Tags:{Model=FlowerModel}]"
+print(replica:Identify()) --> "[Id:7;Class:Flower;Tags:{Model=FlowerModel}]"
 ```
 #### Replica:AddCleanupTask()
 ```lua
