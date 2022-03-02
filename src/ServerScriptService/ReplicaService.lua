@@ -606,6 +606,7 @@ function Replica:SetParent(new_parent)
 	if old_replication ~= new_replication then -- Top level ancestor changed:
 		local old_creation_data = old_parent._creation_data
 		local new_creation_data = new_parent._creation_data
+		self._creation_data = new_creation_data
 		-- Create temporary creation data:
 		local temporary_creation_data = {} -- [string_id] = creation_data_of_one
 		ParseReplicaBranch(self, function(transfered_replica)
