@@ -449,7 +449,7 @@ local WriteLib = {
   AddCoins = function(replica, coin_count)
     replica:SetValue({"CoinsInside"}, replica.Data.CoinsInside + coin_count)
   end,
-  TakeAllCoins = function() --> coins_taken
+  TakeAllCoins = function(replica) --> coins_taken
     local coins = replica.Data.CoinsInside
     replica:SetValue({"CoinsInside"}, 0)
     replica:Write("RestockAll", 1, 10) -- WriteLibs can use their own mutators!
