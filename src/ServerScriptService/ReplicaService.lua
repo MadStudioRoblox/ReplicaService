@@ -294,7 +294,6 @@ local function ParseReplicaBranch(replica, func) -- func(replica)
 	func(replica)
 	for _, child in ipairs(replica.Children) do
 		ParseReplicaBranch(child, func)
-		func(child)
 	end
 end
 
@@ -613,6 +612,7 @@ function Replica:SetParent(new_parent)
 			local replica_id_string = tostring(transfered_replica.Id)
 			temporary_creation_data[replica_id_string] = old_creation_data[replica_id_string]
 			transfered_replica._replication = new_replication -- Swapping _replication reference for reparented replicas
+			transfered_replica._creation_data = new_creation_data
 		end)
 		temporary_creation_data[tostring(replica_id)][4] = new_parent.Id
 		-- Modify creation data for top replicas:
