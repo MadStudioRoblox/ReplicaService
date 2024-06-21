@@ -808,6 +808,8 @@ function Replica:Destroy()
 			rev_ReplicaDestroy:FireClient(player, id)
 		end
 	end
+	local class_name = self.Class
+	CreatedClassTokens[class_name] = false
 	-- Recursive destruction
 	DestroyReplicaAndDescendantsRecursive(self)
 end
@@ -825,6 +827,18 @@ function ReplicaService.NewClassToken(class_name) --> [ReplicaClassToken]
 	return {
 		Class = class_name
 	}
+end
+
+function ReplicaService.ReturnClassToken(class_name) --> [ReplicaClassToken]
+	if type(class_name) ~= "string" then
+		error("[ReplicaService]: class_name must be a string")
+	end
+
+	if CreatedClassTokens[class_name] == true then
+		return {
+			Class = class_name
+		}
+	end
 end
 
 function ReplicaService.NewReplica(replica_params) --> [Replica]
