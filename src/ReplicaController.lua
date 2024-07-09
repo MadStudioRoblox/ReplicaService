@@ -683,6 +683,21 @@ Replica = {}
 Replica.__index = Replica
 
 -- Listening:
+function Replica:Observe(path, listener) --> [ScriptConnection] listener(new_value)
+	if type(listener) ~= "function" then
+		error("[ReplicaController]: Only a function can be set as listener in Replica:Observe()")
+	end
+	
+	local path_array = (type(path) == "string") and StringPathToArray(path) or path
+	if #path_array < 1 then
+		error("[ReplicaController]: Passed empty path - a value key must be specified")
+	end
+	
+	listener(self.Data[path])
+	
+	return self:ListenToChange(path, listener)
+end
+
 function Replica:ListenToChange(path, listener) --> [ScriptConnection] listener(new_value)
 	if type(listener) ~= "function" then
 		error("[ReplicaController]: Only a function can be set as listener in Replica:ListenToChange()")
