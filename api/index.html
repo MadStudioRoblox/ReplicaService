@@ -1,0 +1,2189 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://madstudioroblox.github.io/ReplicaService/api/">
+      
+      
+        <link rel="prev" href="../tutorial/basic_usage/">
+      
+      
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>API - ReplicaService</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#common-types" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ReplicaService" class="md-header__button md-logo" aria-label="ReplicaService" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 1c-1.11 0-2 .89-2 2v4c0 1.11.89 2 2 2H1v2h12V9h-3c1.11 0 2-.89 2-2V3c0-1.11-.89-2-2-2H4m0 2h6v4H4V3M3 13v7h7v-2H5v-5H3m11 0c-1.11 0-2 .89-2 2v4c0 1.11.89 2 2 2h-3v2h12v-2h-3c1.11 0 2-.89 2-2v-4c0-1.11-.89-2-2-2h-6m0 2h6v4h-6v-4Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ReplicaService
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/MadStudioRoblox/ReplicaService" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    MadStudioRoblox/ReplicaService
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ReplicaService" class="md-nav__button md-logo" aria-label="ReplicaService" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 1c-1.11 0-2 .89-2 2v4c0 1.11.89 2 2 2H1v2h12V9h-3c1.11 0 2-.89 2-2V3c0-1.11-.89-2-2-2H4m0 2h6v4H4V3M3 13v7h7v-2H5v-5H3m11 0c-1.11 0-2 .89-2 2v4c0 1.11.89 2 2 2h-3v2h12v-2h-3c1.11 0 2-.89 2-2v-4c0-1.11-.89-2-2-2h-6m0 2h6v4h-6v-4Z"/></svg>
+
+    </a>
+    ReplicaService
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/MadStudioRoblox/ReplicaService" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    MadStudioRoblox/ReplicaService
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorial
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorial
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/settingup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setting up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/basic_usage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic Usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#common-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guarantees
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicaservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReplicaService">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicaserviceactiveplayers" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.ActivePlayers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicenewactiveplayersignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.NewActivePlayerSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaserviceremovedactiveplayersignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.RemovedActivePlayerSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicetemporary" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.Temporary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicenewclasstoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.NewClassToken()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicenewreplica" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.NewReplica()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicacontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReplicaController">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerinitialdatareceivedsignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.InitialDataReceivedSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerinitialdatareceived" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.InitialDataReceived
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerreplicaofclasscreated" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.ReplicaOfClassCreated()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollernewreplicasignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.NewReplicaSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollergetreplicabyid" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.GetReplicaById()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerrequestdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.RequestData()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Replica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared members
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shared members">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicatags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaparent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Parent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicachildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Children
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaisactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:IsActive()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaidentify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:Identify()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaaddcleanuptask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:AddCleanupTask()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaremovecleanuptasktask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:RemoveCleanupTask(task)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-mutators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Built-in mutators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Built-in mutators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicasetvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:SetValue()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicasetvalues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:SetValues()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaarrayinsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ArrayInsert()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaarrayset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ArraySet()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaarrayremove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ArrayRemove()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-mutators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom mutators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom mutators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writelib" class="md-nav__link">
+    <span class="md-ellipsis">
+      WriteLib
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicawrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:Write()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-replicaservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server (ReplicaService)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server (ReplicaService)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicasetparent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:SetParent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicareplicatefor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ReplicateFor()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicadestroyfor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:DestroyFor()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaconnectonserverevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ConnectOnServerEvent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafireclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FireClient()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafireallclients" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FireAllClients()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicadestroy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:Destroy()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-replicacontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client (ReplicaController)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client (ReplicaController)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentowrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToWrite()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentochange" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToChange()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentonewkey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToNewKey()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoarrayinsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToArrayInsert()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoarrayset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToArraySet()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoarrayremove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToArrayRemove()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoraw" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToRaw()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentochildadded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToChildAdded()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafindfirstchildofclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FindFirstChildOfClass()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaconnectonclientevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ConnectOnClientEvent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafireserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FireServer()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#common-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guarantees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Guarantees
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicaservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReplicaService">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicaserviceactiveplayers" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.ActivePlayers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicenewactiveplayersignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.NewActivePlayerSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaserviceremovedactiveplayersignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.RemovedActivePlayerSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicetemporary" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.Temporary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicenewclasstoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.NewClassToken()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaservicenewreplica" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaService.NewReplica()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicacontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ReplicaController">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerinitialdatareceivedsignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.InitialDataReceivedSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerinitialdatareceived" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.InitialDataReceived
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerreplicaofclasscreated" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.ReplicaOfClassCreated()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollernewreplicasignal" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.NewReplicaSignal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollergetreplicabyid" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.GetReplicaById()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacontrollerrequestdata" class="md-nav__link">
+    <span class="md-ellipsis">
+      ReplicaController.RequestData()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Replica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared members
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shared members">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicatags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaparent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Parent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicachildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica.Children
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaisactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:IsActive()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaidentify" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:Identify()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaaddcleanuptask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:AddCleanupTask()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaremovecleanuptasktask" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:RemoveCleanupTask(task)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-mutators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Built-in mutators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Built-in mutators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicasetvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:SetValue()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicasetvalues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:SetValues()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaarrayinsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ArrayInsert()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaarrayset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ArraySet()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaarrayremove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ArrayRemove()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-mutators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom mutators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom mutators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writelib" class="md-nav__link">
+    <span class="md-ellipsis">
+      WriteLib
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicawrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:Write()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-replicaservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Server (ReplicaService)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server (ReplicaService)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicasetparent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:SetParent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicareplicatefor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ReplicateFor()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicadestroyfor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:DestroyFor()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaconnectonserverevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ConnectOnServerEvent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafireclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FireClient()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafireallclients" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FireAllClients()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicadestroy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:Destroy()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-replicacontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client (ReplicaController)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Client (ReplicaController)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentowrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToWrite()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentochange" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToChange()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentonewkey" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToNewKey()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoarrayinsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToArrayInsert()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoarrayset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToArraySet()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoarrayremove" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToArrayRemove()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentoraw" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToRaw()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicalistentochildadded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ListenToChildAdded()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafindfirstchildofclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FindFirstChildOfClass()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicaconnectonclientevent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:ConnectOnClientEvent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicafireserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica:FireServer()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>API</h1>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><a href="https://developer.roblox.com/en-us/articles/Remote-Functions-and-Events#non-replicated-instances">Parameter limitations (developer.roblox.com)</a>
+apply to <code>Replica.Tags</code>, <code>Replica.Data</code>, <code>Replica:FireClient()</code>, <code>Replica:FireAllClients()</code> and <code>Replica:FireServer()</code></p>
+</div>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p><strong>DO NOT YIELD</strong> (<code>wait()</code> or asynchronous tasks like <code>Instance:WaitForChild()</code>; Most methods / functions with <code>async</code> in their name) inside
+<a href="#writelib">write functions</a> or <a href="#client-replicacontroller">listener functions</a> connected via <code>Replica:ListenToWrite()</code>, <code>Replica:ListenToChange()</code>, etc.
+Yielding in these places will cause ReplicaService / ReplicaController to skip replication events and lose data synchronization.</p>
+</div>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>The <code>ReplicaController</code> and <code>ReplicaService</code> modules will yield on <code>require()</code> if the internally included modules are not found immediately</p>
+</div>
+<h2 id="common-types">Common types</h2>
+<p><strong><code>path</code></strong> - A path defines a location of a value within a dictionary (arrays will work too).
+<a href="#built-in-mutators">Built-in mutators</a> use the path variable to make the server and the
+client perform identical changes to their copy of the state.
+<div class="highlight"><pre><span></span><code><span class="c1">-- Using [table] type paths is highly recommended - string type paths</span>
+<span class="c1">--   will have a slightly bigger performance impact in large replica</span>
+<span class="c1">--   implementations</span>
+
+<span class="n">path</span>   <span class="p">[</span><span class="n">table</span><span class="p">]</span> <span class="p">{</span><span class="s2">&quot;Currencies&quot;</span><span class="p">,</span> <span class="s2">&quot;Coins&quot;</span><span class="p">}</span> <span class="c1">-- Can use numeric indexes to</span>
+<span class="c1">--   locate values in an array</span>
+
+<span class="n">path</span>   <span class="p">[</span><span class="n">string</span><span class="p">]</span> <span class="s2">&quot;Currencies.Coins&quot;</span> <span class="c1">-- Use dots to separate multiple keys;</span>
+<span class="c1">--   Will only work on string keys</span>
+</code></pre></div></p>
+<p><strong><code>function_name</code></strong> - Similar to <code>path</code>, locates a function within a <a href="#writelib">WriteLib</a>.
+<div class="highlight"><pre><span></span><code><span class="n">function_name</span>   <span class="p">[</span><span class="n">string</span><span class="p">]</span> <span class="s2">&quot;Currency.AddCoins&quot;</span> <span class="c1">-- Use dots to separate multiple keys;</span>
+<span class="c1">--   Functions and their categories may only have string keys</span>
+
+<span class="c1">-- It&#39;s highly recommended to avoid using function categories and</span>
+<span class="c1">--   keeping your WriteLib modules flat and short, dividing large</span>
+<span class="c1">--   replicas into several, smaller replicas with fewer concerns</span>
+</code></pre></div></p>
+<h2 id="guarantees">Guarantees</h2>
+<p>ReplicaService and ReplicaController perform all tasks and fire all new replica signals one at
+a time, one after another (sequential execution). Understanding the order of execution can help you
+make more efficient decisions in solving your problems.</p>
+<p>When a replica reference is received through <code>.NewReplicaSignal</code> or <code>.ReplicaOfClassCreated()</code>,
+ReplicaController provides these guarantees:</p>
+<ul>
+<li>Whenever any replica is received client-side, all descendants (all children &amp; children of children)
+      of that replica at the moment of replication (Parent set in <code>replica_params</code> or <a href="#replicareplicatefor">:ReplicateFor()</a>)
+      will be accessible on the client-side!</li>
+<li>When the client receives first data or receives selective replication of a top level replica,
+            <code>.NewReplicaSignal</code> and <code>.ReplicaOfClassCreated()</code> will be fired for all replicas in the
+      order they were created server-side from earliest to latest (<a href="#replicaid">Replica.Id</a>
+      reflects this order). E.g. Creating <code>"replica1"</code> and then <code>"replica2"</code> in this order
+      server-side will make all clients create (and fire <code>.NewReplicaSignal</code> and <code>.ReplicaOfClassCreated()</code> for)
+      these replicas in the exact order assuming they are replicated to all players or are descendants
+      of the same top level replica at the moment of replication.</li>
+</ul>
+<h2 id="replicaservice">ReplicaService</h2>
+<h3 id="replicaserviceactiveplayers">ReplicaService.ActivePlayers</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaService</span><span class="p">.</span><span class="n">ActivePlayers</span>   <span class="p">[</span><span class="n">table</span><span class="p">]</span> <span class="c1">-- (read-only) {player = true, ...}</span>
+</code></pre></div>
+A reference of players that have received initial data - having received initial data means having access to
+all replicas that are selectively replicated to that player.</p>
+<h3 id="replicaservicenewactiveplayersignal">ReplicaService.NewActivePlayerSignal</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewActivePlayerSignal</span>   <span class="p">[</span><span class="n">ScriptSignal</span><span class="p">]</span> <span class="p">(</span><span class="n">player</span><span class="p">)</span>
+</code></pre></div>
+A signal for new <code>ReplicaService.ActivePlayers</code> entries.</p>
+<h3 id="replicaserviceremovedactiveplayersignal">ReplicaService.RemovedActivePlayerSignal</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaService</span><span class="p">.</span><span class="n">RemovedActivePlayerSignal</span>   <span class="p">[</span><span class="n">ScriptSignal</span><span class="p">]</span> <span class="p">(</span><span class="n">player</span><span class="p">)</span>
+</code></pre></div>
+A signal for removed <code>ReplicaService.RemovedActivePlayerSignal</code> entries.</p>
+<h3 id="replicaservicetemporary">ReplicaService.Temporary</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaService</span><span class="p">.</span><span class="n">Temporary</span>   <span class="p">[</span><span class="n">Replica</span><span class="p">]</span>
+</code></pre></div>
+A replica that is not replicated to any player and a "helper" for creating nested <code>Replica</code> objects
+when immediate replication of individual nested replicas is not desirable.</p>
+<p><strong><em>ReplicaService.Temporary Example:</em></strong></p>
+<p>Server-side:
+<div class="highlight"><pre><span></span><code><span class="c1">-- A valid use case is when it is desired for clients to receive a</span>
+<span class="c1">--   replica structure with all children replicated together as</span>
+<span class="c1">--   opposed to the client first receiving a parent creation signal</span>
+<span class="c1">--   (with missing children at that moment) and child creation</span>
+<span class="c1">--   signals coming in separately:</span>
+
+<span class="kd">local</span> <span class="n">UseTemporary</span> <span class="o">=</span> <span class="kc">true</span> <span class="c1">-- Set to false to make the replicas be</span>
+<span class="c1">--   replicated separately</span>
+
+<span class="kd">local</span> <span class="n">ContainerReplica</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">({</span>
+  <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="s2">&quot;SingletonContainerReplica&quot;</span><span class="p">),</span>
+  <span class="n">Replication</span> <span class="o">=</span> <span class="s2">&quot;All&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="kd">local</span> <span class="n">ReplicaClassToken1</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="s2">&quot;Class1&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">ReplicaClassToken2</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="s2">&quot;Class2&quot;</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">parent</span> <span class="o">=</span> <span class="n">ContainerReplica</span>
+<span class="kr">if</span> <span class="n">UseTemporary</span> <span class="o">==</span> <span class="kc">true</span> <span class="kr">then</span>
+  <span class="n">parent</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">Temporary</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span> <span class="n">nested_replica</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">({</span>
+  <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">ReplicaClassToken1</span><span class="p">,</span> <span class="c1">-- &quot;Class1&quot;</span>
+  <span class="n">Parent</span> <span class="o">=</span> <span class="n">parent</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kd">local</span> <span class="n">child_replica</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">({</span>
+  <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">ReplicaClassToken2</span><span class="p">,</span> <span class="c1">-- &quot;Class2&quot;</span>
+  <span class="n">Parent</span> <span class="o">=</span> <span class="n">nested_replica</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="n">nested_replica</span><span class="p">:</span><span class="n">SetParent</span><span class="p">(</span><span class="n">ContainerReplica</span><span class="p">)</span> <span class="c1">-- Sets Parent to ContainerReplica</span>
+<span class="c1">--   if it wasn&#39;t already parented to ContainerReplica</span>
+</code></pre></div></p>
+<p>Client-side:
+<div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">ReplicaOfClassCreated</span><span class="p">(</span><span class="s2">&quot;Class1&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">replica</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="n">replica</span><span class="p">.</span><span class="n">Children</span><span class="p">)</span> <span class="c1">--&gt; Will print 1 when UseTemporary is set to true</span>
+  <span class="c1">--   or 0 when UseTemporary is set to false</span>
+  <span class="nb">coroutine.wrap</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+    <span class="n">wait</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="n">replica</span><span class="p">.</span><span class="n">Children</span><span class="p">)</span> <span class="c1">--&gt; Will always print 1 when UseTemporary</span>
+    <span class="c1">--   is set to true and is very likely, but not guaranteed to</span>
+    <span class="c1">--   print 1 when UseTemporary is set to false</span>
+  <span class="kr">end</span><span class="p">)()</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="n">ReplicaController</span><span class="p">.</span><span class="n">RequestData</span><span class="p">()</span> <span class="c1">-- Only using here for testing purposes</span>
+<span class="c1">--   ReplicaController.RequestData() should only be called once in the</span>
+<span class="c1">--   entire codebase!</span>
+</code></pre></div></p>
+<h3 id="replicaservicenewclasstoken">ReplicaService.NewClassToken()</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="n">class_name</span><span class="p">)</span> <span class="c1">--&gt; [ReplicaClassToken]</span>
+</code></pre></div>
+Class tokens for a particular <code>class_name</code> can only be created once - this helps the developer avoid <code>Replica</code> class name collisions when merging codebases.</p>
+<h3 id="replicaservicenewreplica">ReplicaService.NewReplica()</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">(</span><span class="n">replica_params</span><span class="p">)</span> <span class="c1">--&gt; [Replica]</span>
+  <span class="n">replica_params</span>   <span class="p">[</span><span class="n">table</span><span class="p">]:</span>
+    <span class="p">{</span>
+      <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">replica_class_token</span><span class="p">,</span>
+      <span class="c1">-- Optional params (can be nil):</span>
+      <span class="n">Tags</span> <span class="o">=</span> <span class="p">{},</span> <span class="c1">-- {TagName = tag_value, ...}</span>
+      <span class="n">Data</span> <span class="o">=</span> <span class="p">{},</span> <span class="c1">-- Table to be replicated (Retains table reference)</span>
+      <span class="n">Replication</span> <span class="o">=</span> <span class="s2">&quot;All&quot;</span> <span class="ow">or</span> <span class="p">{[</span><span class="n">Player</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="p">...}</span> <span class="ow">or</span> <span class="p">[</span><span class="n">Player</span><span class="p">],</span>
+      <span class="n">Parent</span> <span class="o">=</span> <span class="n">replica</span><span class="p">,</span> <span class="c1">-- [Replica]</span>
+      <span class="n">WriteLib</span> <span class="o">=</span> <span class="n">write_lib_module</span><span class="p">,</span> <span class="c1">-- [ModuleScript]</span>
+    <span class="p">}</span>
+</code></pre></div>
+Creates a replica and immediately replicates to select <a href="#replicaserviceactiveplayers">active players</a> based on replication settings
+of this <code>Replica</code> or the parent <code>Replica</code>.</p>
+<ul>
+<li><strong>ClassToken</strong> - Sets <code>Replica.Class</code> to the string provided in <code>ReplicaService.NewClassToken(class_name)</code></li>
+<li><strong>Tags</strong> - (Default: <code>{}</code> empty table) A dictionary of identifiers. Use <code>Tags</code> to let the client know which
+game objects the <code>Replica</code> belongs to: <code>Tags = {Part = part, Player = player, ...}</code>. Tags can't be changed after
+the <code>Replica</code> is created.</li>
+<li><strong>Data</strong> - (Default: <code>{}</code> empty table) A table representing a state. Using <code>Profile.Data</code> from <a href="https://madstudioroblox.github.io/ProfileService/">ProfileService</a>
+is valid!</li>
+<li><strong>Replication</strong> - (Default: <code>{}</code> not replicated to anyone) Pass <code>"All"</code> to replicate to everyone in the game and everyone
+who will join the game later. Pass <code>{Player = true, Player = true, ...}</code> dictionary or <code>Player</code> instance for selective
+replication.</li>
+<li><strong>Parent</strong> - (Default: <code>nil</code>) Don't provide any value to create a <strong>top level replica</strong> - top level replicas can't
+be parented to other replicas and force their replication settings to all descendant nested replicas. Providing a
+parent creates a <strong>nested replica</strong> - nested replicas can be parented to any replica (except their own children),
+but they can't have their own replication settings. Hence the <code>Replication</code> and <code>Parent</code> parameters are mutually
+exclusive.</li>
+<li><strong>WriteLib</strong> - (Default: <code>nil</code>) Provide a <code>ModuleScript</code> (not the return of <code>require()</code>) to assign write functions
+(mutator functions) to this replica. The <code>WriteLib</code> parameter is individual for every <code>Replica</code>.</li>
+</ul>
+<h2 id="replicacontroller">ReplicaController</h2>
+<h3 id="replicacontrollerinitialdatareceivedsignal">ReplicaController.InitialDataReceivedSignal</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">InitialDataReceivedSignal</span>   <span class="p">[</span><span class="n">ScriptSignal</span><span class="p">]()</span>
+</code></pre></div>
+Fired once after the client finishes receiving initial replica data from server.</p>
+<h3 id="replicacontrollerinitialdatareceived">ReplicaController.InitialDataReceived</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">InitialDataReceived</span>   <span class="p">[</span><span class="n">bool</span><span class="p">]</span>
+</code></pre></div>
+Set to true after the client finishes receiving initial replica data from server.</p>
+<h3 id="replicacontrollerreplicaofclasscreated">ReplicaController.ReplicaOfClassCreated()</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">ReplicaOfClassCreated</span><span class="p">(</span><span class="n">replica_class</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span>
+    <span class="c1">--&gt; [ScriptConnection] listener(replica)</span>
+</code></pre></div>
+Listens to creation of replicas client-side of a particular class.
+<div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">ReplicaOfClassCreated</span><span class="p">(</span><span class="s2">&quot;Flower&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">replica</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Flower replica created:&quot;</span><span class="p">,</span> <span class="n">replica</span><span class="p">:</span><span class="n">Identify</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">replica</span><span class="p">.</span><span class="n">Class</span> <span class="o">==</span> <span class="s2">&quot;Flower&quot;</span><span class="p">)</span> <span class="c1">--&gt; true</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+This is the preferred method of grabbing references to all replicas clients-side.</p>
+<h3 id="replicacontrollernewreplicasignal">ReplicaController.NewReplicaSignal</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">NewReplicaSignal</span>   <span class="p">[</span><span class="n">ScriptSignal</span><span class="p">]</span> <span class="p">(</span><span class="n">replica</span><span class="p">)</span>
+</code></pre></div>
+Fired every time a replica is created client-side.
+<div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">NewReplicaSignal</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">replica</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Replica created:&quot;</span><span class="p">,</span> <span class="n">replica</span><span class="p">:</span><span class="n">Identify</span><span class="p">())</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="replicacontrollergetreplicabyid">ReplicaController.GetReplicaById()</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">GetReplicaById</span><span class="p">(</span><span class="n">replica_id</span><span class="p">)</span> <span class="c1">--&gt; [Replica] or nil</span>
+</code></pre></div>
+Returns a <code>Replica</code> that is loaded client-side with a <code>Replica.Id</code> that matches <code>replica_id</code>.</p>
+<h3 id="replicacontrollerrequestdata">ReplicaController.RequestData()</h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">RequestData</span><span class="p">()</span>
+</code></pre></div>
+Requests the server to start sending replica data.</p>
+<p><strong>All <code>.NewReplicaSignal</code> and <code>.ReplicaOfClassCreated()</code> listeners</strong>
+<strong>should be connected before calling <code>.RequestData()</code>! - refrain from connecting</strong>
+<strong>listeners afterwards!</strong></p>
+<p>If your game has local scripts that may run later during gameplay and they will need to interact with
+replicas, you should create a centralized module that connects <code>Replica</code> creation listeners before <code>.RequestData()</code>
+and provides those local scripts with the replica references they need.</p>
+<h2 id="replica">Replica</h2>
+<h3 id="shared-members">Shared members</h3>
+<h4 id="replicadata">Replica.Data</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">.</span><span class="n">Data</span>   <span class="p">[</span><span class="n">table</span><span class="p">]</span> <span class="c1">-- (read-only)</span>
+</code></pre></div>
+Table representing the state wrapped by the <code>Replica</code>. Note that after wrapping a table with a <code>Replica</code> you
+may no longer write directly to that table (doing so would potentially desynchronize state among clients and
+in some cases even break code) - all changes must be applied through <a href="#built-in-mutators">mutators</a>.
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">PlayerStatsReplicaClassToken</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="s2">&quot;PlayerStats&quot;</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">player</span> <span class="c1">-- A Player instance</span>
+<span class="kd">local</span> <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">Coins</span> <span class="o">=</span> <span class="mi">100</span><span class="p">}</span>
+<span class="kd">local</span> <span class="n">replica</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">({</span>
+  <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">PlayerStatsReplicaClassToken</span><span class="p">,</span>
+  <span class="n">Tags</span> <span class="o">=</span> <span class="p">{</span><span class="n">Player</span> <span class="o">=</span> <span class="n">player</span><span class="p">},</span>
+  <span class="n">Data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="c1">-- Replica does not create a deep copy!</span>
+  <span class="n">Replication</span> <span class="o">=</span> <span class="s2">&quot;All&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">replica</span><span class="p">.</span><span class="n">Data</span> <span class="o">==</span> <span class="n">data</span><span class="p">)</span> <span class="c1">--&gt; true</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">replica</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">Coins</span><span class="p">)</span> <span class="c1">--&gt; 100</span>
+<span class="n">replica</span><span class="p">:</span><span class="n">SetValue</span><span class="p">({</span><span class="s2">&quot;Coins&quot;</span><span class="p">},</span> <span class="mi">420</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">Coins</span><span class="p">,</span> <span class="n">replica</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">Coins</span><span class="p">)</span> <span class="c1">--&gt; 420 420</span>
+</code></pre></div></p>
+<h4 id="replicaid">Replica.Id</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">.</span><span class="n">Id</span>   <span class="p">[</span><span class="n">number</span><span class="p">]</span> <span class="c1">-- (read-only)</span>
+</code></pre></div>
+An identifier that is unique for every <code>Replica</code> within a Roblox game session.</p>
+<h4 id="replicaclass">Replica.Class</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">.</span><span class="n">Class</span>   <span class="p">[</span><span class="n">string</span><span class="p">]</span> <span class="c1">-- (read-only)</span>
+</code></pre></div>
+The <code>class_name</code> parameter that has been used for the <a href="#replicaservicenewclasstoken">ReplicaClassToken</a> used
+to create this <code>Replica</code>.</p>
+<h4 id="replicatags">Replica.Tags</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">.</span><span class="n">Tags</span>   <span class="p">[</span><span class="n">table</span><span class="p">]</span> <span class="c1">-- (read-only)</span>
+</code></pre></div>
+A custom static <code>Replica</code> identifier mainly used for referencing affected game instances.
+Only used for properties that will not change for the rest of the <code>Replica</code>'s lifespan.
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">CharacterReplicaClassToken</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="s2">&quot;Character&quot;</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">player</span> <span class="c1">-- A Player instance</span>
+<span class="kd">local</span> <span class="n">character</span> <span class="c1">-- A Model instance</span>
+<span class="kd">local</span> <span class="n">replica</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">({</span>
+  <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">CharacterReplicaClassToken</span><span class="p">,</span>
+  <span class="n">Tags</span> <span class="o">=</span> <span class="p">{</span><span class="n">Player</span> <span class="o">=</span> <span class="n">player</span><span class="p">,</span> <span class="n">Character</span> <span class="o">=</span> <span class="n">character</span><span class="p">,</span> <span class="n">Appearance</span> <span class="o">=</span> <span class="s2">&quot;Ninja&quot;</span><span class="p">},</span>
+  <span class="n">Replication</span> <span class="o">=</span> <span class="s2">&quot;All&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+</code></pre></div></p>
+<h4 id="replicaparent">Replica.Parent</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">.</span><span class="n">Parent</span>   <span class="p">[</span><span class="n">Replica</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">nil</span> <span class="c1">-- (read-only)</span>
+</code></pre></div>
+Reference to the parent <code>Replica</code>. All <strong>nested replicas</strong> <em>will</em> have a parent. All <strong>top level replicas</strong> will have their <code>Parent</code> property set to <code>nil</code>.
+<strong>nested replicas</strong> will never become <strong>top level replicas</strong> and vice versa.</p>
+<h4 id="replicachildren">Replica.Children</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">.</span><span class="n">Children</span>   <span class="p">[</span><span class="n">table</span><span class="p">]</span> <span class="c1">-- (read-only) {replica, ...} </span>
+</code></pre></div>
+An array of replicas parented to this <code>Replica</code>.</p>
+<h4 id="replicaisactive">Replica:IsActive()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">IsActive</span><span class="p">()</span> <span class="c1">--&gt; is_active [bool]</span>
+</code></pre></div>
+Returns <code>false</code> if the <code>Replica</code> was destroyed.</p>
+<h4 id="replicaidentify">Replica:Identify()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">Identify</span><span class="p">()</span> <span class="c1">--&gt; [string]</span>
+</code></pre></div>
+Creates a brief string description of a <code>Replica</code>, excluding <code>Replica.Data</code> contents. Used for debug purposes.
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">replica</span><span class="p">:</span><span class="n">Identify</span><span class="p">())</span> <span class="c1">--&gt; &quot;[Id:7;Class:Flower;Tags:{Model=FlowerModel}]&quot;</span>
+</code></pre></div></p>
+<h4 id="replicaaddcleanuptask">Replica:AddCleanupTask()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">AddCleanupTask</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+<span class="c1">--  task   [function] or [Instance] or [Object] (with :Destroy() or :Disconnect())</span>
+</code></pre></div>
+Signs up a task, object, instance or function to be ran or destroyed when the <code>Replica</code> is destroyed.
+The cleanup task is performed instantly if the <code>Replica</code> is already destroyed.
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">FlowerReplicaClassToken</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="s2">&quot;Flower&quot;</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">flower_model</span> <span class="c1">-- A Model instance</span>
+<span class="kd">local</span> <span class="n">replica</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">({</span>
+  <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">FlowerReplicaClassToken</span><span class="p">,</span>
+  <span class="n">Tags</span> <span class="o">=</span> <span class="p">{</span><span class="n">Model</span> <span class="o">=</span> <span class="n">flower_model</span><span class="p">},</span>
+  <span class="n">Data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">HasBees</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="n">HoneyScore</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="n">Replication</span> <span class="o">=</span> <span class="s2">&quot;All&quot;</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="n">replica</span><span class="p">:</span><span class="n">AddCleanupTask</span><span class="p">(</span><span class="n">flower_model</span><span class="p">)</span>
+<span class="n">replica</span><span class="p">:</span><span class="n">Destroy</span><span class="p">()</span> <span class="c1">-- Destroys the replica for all subscribed clients first,</span>
+<span class="c1">--   then runs all the cleanup tasks including destroying the flower_model</span>
+</code></pre></div></p>
+<h4 id="replicaremovecleanuptasktask">Replica:RemoveCleanupTask(task)</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">RemoveCleanupTask</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+</code></pre></div>
+Removes the cleanup task from the cleanup list.</p>
+<h3 id="built-in-mutators">Built-in mutators</h3>
+<p><em>(<code>path</code> parameter is defined in <a href="#common-types">CommonTypes</a>)</em></p>
+<p>Mutators can alter any value in <code>Replica.Data</code> and replicate this change to players that have this <code>Replica</code>
+replicated to them. Mutators can only be used server-side or inside <a href="#writelib">WriteLibs</a>. Mutators will
+not trigger replication when called inside <a href="#writelib">WriteLibs</a> since the code is already going to be
+performed both on the server and client.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Just like with <a href="https://developer.roblox.com/en-us/api-reference/class/RemoteEvent">RemoteEvents</a>,
+passing <code>value</code> as a reference to an instance which is not replicated to the player (e.g. parented
+to ServerScriptStorage / not parented to the DataModel) will make the client receive a nil value.</p>
+</div>
+<h4 id="replicasetvalue">Replica:SetValue()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">SetValue</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+Sets any individual value within <code>Replica.Data</code> to <code>value</code>. Parameter <code>value</code> can be <code>nil</code> and
+will set the value located in <code>path</code> to <code>nil</code>.</p>
+<h4 id="replicasetvalues">Replica:SetValues()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">SetValues</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> 
+</code></pre></div>
+Sets multiple keys located in <code>path</code> to specified <code>values</code>
+<div class="highlight"><pre><span></span><code><span class="n">replica</span><span class="p">:</span><span class="n">SetValues</span><span class="p">({</span><span class="s2">&quot;Fruit&quot;</span><span class="p">},</span> <span class="p">{</span>
+  <span class="c1">-- Notice: keys can&#39;t be paths here, only direct members</span>
+  <span class="n">Apples</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="n">Oranges</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="c1">-- WARNING: nil values will not work with replica:SetValues()</span>
+  <span class="n">Bananas</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="c1">-- THIS IS INVALID, USE</span>
+  <span class="c1">--   Replica:SetValue({&quot;Fruit&quot;, &quot;Bananas&quot;}, nil)</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">replica</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">Fruit</span><span class="p">.</span><span class="n">Oranges</span><span class="p">)</span> <span class="c1">--&gt; 2</span>
+</code></pre></div></p>
+<h4 id="replicaarrayinsert">Replica:ArrayInsert()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ArrayInsert</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1">--&gt; new_index [number]</span>
+</code></pre></div>
+Performs <code>table.insert(t, value)</code> where <code>t</code> is a numeric sequential array <code>table</code> located in <code>path</code>.</p>
+<h4 id="replicaarrayset">Replica:ArraySet()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ArraySet</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+Performs <code>t[index] = value</code> where <code>t</code> is a numeric sequential array <code>table</code> located in <code>path</code>.</p>
+<h4 id="replicaarrayremove">Replica:ArrayRemove()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ArrayRemove</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="c1">--&gt; removed_value</span>
+</code></pre></div>
+Performs <code>table.remove(t, index)</code> where <code>t</code> is a numeric sequential array <code>table</code> located in <code>path</code>.</p>
+<h3 id="custom-mutators">Custom mutators</h3>
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>Custom mutator functions <strong>must execute identical data changes on server and client given the same function parameters</strong> (Always assume
+<code>Replica.Data</code> of all replicated replicas are identical on server and client-side at the time of a write function execution).
+Implementing <code>RunService:IsServer()</code>, reading physical positions of parts or reading machine time (<code>os.clock()</code>, <code>tick()</code>, etc.)
+within write functions may lead to <code>Replica.Data</code> desynchronization between server and client-side and a collapse of stable behaviour from further replicated
+<a href="https://en.wikipedia.org/wiki/Delta_encoding">delta-data</a>.</p>
+<p>In Layman's terms, a desyncronized client can be asked
+to add <code>1</code> to a value (Within <code>Replica.Data</code>, via a <a href="#writelib">write function</a>) which is equal to <code>100</code> locally, but is equal to <code>101</code> on the server,
+resulting in values <code>101</code> and <code>102</code> on client and server-side respectively. You may easily desynchronize machines by asking the server and client to add
+<code>os.clock()</code> to said value - <code>os.clock()</code> is always assumed to be a "desynchronized" value among all machinces and adding it to a synchronized value will
+desynchronize it. Due to Roblox physics being a partially locally simulated feature, desynchronization can also be done by using moving part position values.</p>
+<p>You may still use <code>os.clock()</code> or part positions passed as initial write function parameters on server-side so the client may repeat write function operations with
+identical function parameters.</p>
+<p>Keep it synchronized.</p>
+</div>
+<h4 id="writelib">WriteLib</h4>
+<p>A <em>WriteLib</em> is a <code>ModuleScript</code> containing a dictionary of mutator functions. When these functions are
+triggered using <code>Replica:Write()</code>, they will be called on both the server and all clients that have this
+<code>Replica</code> replicated to them. ReplicaService serializes all WriteLib functions to numbers, so only a small
+number is replicated as a reference to that function.</p>
+<p><strong><em>WriteLib example structure:</em></strong></p>
+<p>(<code>ModuleScript</code> WriteLib.lua - <strong>Must be a descendant of a replicated instance / container (e.g. ReplicatedStorage)</strong>)
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">WriteLib</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">-- Mutator functions will receive the first parameter as the</span>
+  <span class="c1">--   Replica being mutated; Custom parameters passed with</span>
+  <span class="c1">--   Replica:Write() will follow</span>
+  <span class="n">RestockAll</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">replica</span><span class="p">,</span> <span class="n">restock_count</span><span class="p">,</span> <span class="n">max_count</span><span class="p">)</span>
+    <span class="kr">for</span> <span class="n">soda_name</span><span class="p">,</span> <span class="n">old_count</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">replica</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">Cans</span><span class="p">)</span> <span class="kr">do</span>
+      <span class="c1">-- Using mutators inside WriteLibs will trigger client-side</span>
+      <span class="c1">--   listeners as expected:</span>
+      <span class="n">replica</span><span class="p">:</span><span class="n">SetValue</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;Cans&quot;</span><span class="p">,</span> <span class="n">soda_name</span><span class="p">},</span>
+        <span class="nb">math.min</span><span class="p">(</span><span class="n">old_count</span> <span class="o">+</span> <span class="n">restock_count</span><span class="p">,</span> <span class="n">max_count</span><span class="p">)</span>
+      <span class="p">)</span>
+    <span class="kr">end</span>
+  <span class="kr">end</span><span class="p">,</span>
+  <span class="n">TakeCan</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">replica</span><span class="p">,</span> <span class="n">soda_name</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="c1">--&gt; amount_taken</span>
+    <span class="kd">local</span> <span class="n">old_count</span> <span class="o">=</span> <span class="n">replica</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">Cans</span><span class="p">[</span><span class="n">soda_name</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+    <span class="kd">local</span> <span class="n">amount_taken</span> <span class="o">=</span> <span class="nb">math.min</span><span class="p">(</span><span class="n">old_count</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="n">amount_taken</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="kr">then</span>
+       <span class="n">replica</span><span class="p">:</span><span class="n">SetValue</span><span class="p">({</span><span class="s2">&quot;Cans&quot;</span><span class="p">,</span> <span class="n">soda_name</span><span class="p">},</span> <span class="n">old_count</span> <span class="o">-</span> <span class="n">amount_taken</span><span class="p">)</span>
+    <span class="kr">end</span>
+    <span class="kr">return</span> <span class="n">amount_taken</span>
+  <span class="kr">end</span><span class="p">,</span>
+  <span class="n">AddCoins</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">replica</span><span class="p">,</span> <span class="n">coin_count</span><span class="p">)</span>
+    <span class="n">replica</span><span class="p">:</span><span class="n">SetValue</span><span class="p">({</span><span class="s2">&quot;CoinsInside&quot;</span><span class="p">},</span> <span class="n">replica</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">CoinsInside</span> <span class="o">+</span> <span class="n">coin_count</span><span class="p">)</span>
+  <span class="kr">end</span><span class="p">,</span>
+  <span class="n">TakeAllCoins</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span> <span class="c1">--&gt; coins_taken</span>
+    <span class="kd">local</span> <span class="n">coins</span> <span class="o">=</span> <span class="n">replica</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">CoinsInside</span>
+    <span class="n">replica</span><span class="p">:</span><span class="n">SetValue</span><span class="p">({</span><span class="s2">&quot;CoinsInside&quot;</span><span class="p">},</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">replica</span><span class="p">:</span><span class="n">Write</span><span class="p">(</span><span class="s2">&quot;RestockAll&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">-- WriteLibs can use their own mutators!</span>
+    <span class="kr">return</span> <span class="n">coins</span>
+  <span class="kr">end</span><span class="p">,</span>
+  <span class="c1">-- A note for power users:</span>
+  <span class="c1">--   replica.Children and replica.Parent can be accessed within</span>
+  <span class="c1">--   WriteLib mutator functions - built-in and custom mutators</span>
+  <span class="c1">--   can be triggered for those replicas as well. Go wild!</span>
+<span class="p">}</span>
+
+<span class="kr">return</span> <span class="n">WriteLib</span>
+</code></pre></div></p>
+<p>(<code>Script</code> ReplicaTest.server.lua)
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">SodaMachineReplicaClassToken</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewClassToken</span><span class="p">(</span><span class="s2">&quot;SodaMachine&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">WriteLib</span> <span class="o">=</span> <span class="n">game</span><span class="p">.</span><span class="n">ReplicatedStorage</span><span class="p">:</span><span class="n">FindFirstChild</span><span class="p">(</span><span class="s2">&quot;WriteLib&quot;</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">model</span> <span class="c1">-- A Model instance</span>
+<span class="kd">local</span> <span class="n">replica</span> <span class="o">=</span> <span class="n">ReplicaService</span><span class="p">.</span><span class="n">NewReplica</span><span class="p">({</span>
+  <span class="n">ClassToken</span> <span class="o">=</span> <span class="n">CoinReplicaClassToken</span><span class="p">,</span>
+  <span class="n">Tags</span> <span class="o">=</span> <span class="p">{</span><span class="n">Model</span> <span class="o">=</span> <span class="n">model</span><span class="p">},</span>
+  <span class="n">Data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">Cans</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">Cola</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="n">Lemonade</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="n">RootBeer</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">CoinsInside</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="p">},</span> <span class="c1">-- Replica does not create a deep copy!</span>
+  <span class="n">Replication</span> <span class="o">=</span> <span class="s2">&quot;All&quot;</span><span class="p">,</span>
+  <span class="n">WriteLib</span> <span class="o">=</span> <span class="n">WriteLib</span>
+<span class="p">})</span>
+
+<span class="kd">local</span> <span class="n">cola_click_detector</span> <span class="c1">-- Assume this is a ClickDetector of a cola button</span>
+<span class="kd">local</span> <span class="n">restock_click_detector</span> <span class="c1">-- Assume this is a ClickDetector of a restock button</span>
+
+<span class="n">cola_click_detector</span><span class="p">.</span><span class="n">MouseClick</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+  <span class="n">replica</span><span class="p">:</span><span class="n">Write</span><span class="p">(</span><span class="s2">&quot;TakeCan&quot;</span><span class="p">,</span> <span class="s2">&quot;Cola&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="n">restock_click_detector</span><span class="p">.</span><span class="n">MouseClick</span><span class="p">:</span><span class="n">Connect</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+  <span class="n">replica</span><span class="p">:</span><span class="n">Write</span><span class="p">(</span><span class="s2">&quot;RestockAll&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div></p>
+<p>(<code>LocalScript</code> ReplicaTest.client.lua)
+<div class="highlight"><pre><span></span><code><span class="n">ReplicaController</span><span class="p">.</span><span class="n">ReplicaOfClassCreated</span><span class="p">(</span><span class="s2">&quot;SodaMachine&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">replica</span><span class="p">)</span>
+
+  <span class="kd">local</span> <span class="n">machine_model</span> <span class="o">=</span> <span class="n">replica</span><span class="p">.</span><span class="n">Tags</span><span class="p">.</span><span class="n">Model</span>
+
+  <span class="n">replica</span><span class="p">:</span><span class="n">ListenToWrite</span><span class="p">(</span><span class="s2">&quot;TakeCan&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">soda_name</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+    <span class="c1">-- Play sound on the client?</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&quot; can(s) of &quot;</span> <span class="o">..</span> <span class="n">soda_name</span>
+      <span class="o">..</span> <span class="s2">&quot; have been taken from &quot;</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">machine_model</span><span class="p">))</span>
+  <span class="kr">end</span><span class="p">)</span>
+
+  <span class="n">replica</span><span class="p">:</span><span class="n">ListenToWrite</span><span class="p">(</span><span class="s2">&quot;RestockAll&quot;</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">restock_count</span><span class="p">,</span> <span class="n">max_count</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">tostring</span><span class="p">(</span><span class="n">machine_model</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&quot; has been restocked! (&quot;</span>
+      <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">restock_count</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&quot; each)&quot;</span><span class="p">)</span>
+  <span class="kr">end</span><span class="p">)</span>
+
+  <span class="n">replica</span><span class="p">:</span><span class="n">ListenToChange</span><span class="p">({</span><span class="s2">&quot;Cans&quot;</span><span class="p">,</span> <span class="s2">&quot;Cola&quot;</span><span class="p">},</span> <span class="kr">function</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coke can count has changed:&quot;</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span>
+  <span class="kr">end</span><span class="p">)</span>
+
+  <span class="c1">-- Notice: You don&#39;t need to disconnect Replica listeners as the listeners</span>
+  <span class="c1">--    will be forgotten when the Replica is destroyed</span>
+
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div></p>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>Be aware that things like <code>os.clock()</code> will have different values on the server and client when referenced
+inside a WriteLib. Instead you can make the server pass such values as parameters to a mutator function.</p>
+</div>
+<h4 id="replicawrite">Replica:Write()</h4>
+<p><em>(<code>function_name</code> parameter is defined in <a href="#common-types">CommonTypes</a>)</em>
+<div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">Write</span><span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">params</span><span class="p">...)</span> <span class="c1">--&gt; params...</span>
+<span class="c1">--    Returns anything the write function returns</span>
+</code></pre></div>
+Calls a function within a <a href="#writelib">WriteLib</a> that has been assigned to this <code>Replica</code> for both the server
+and all clients that have this <code>Replica</code> replicated to them.</p>
+<h3 id="server-replicaservice">Server (ReplicaService)</h3>
+<h4 id="replicasetparent">Replica:SetParent()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">SetParent</span><span class="p">(</span><span class="n">replica</span><span class="p">)</span>
+</code></pre></div>
+Changes the <code>Parent</code> of the <code>Replica</code>.</p>
+<p><strong>Only nested replicas can have their parents changed</strong>
+<strong>(nested replicas are replicas that were initially created with a parent).</strong></p>
+<p>If a <code>Replica</code>, from a single player's perspective, is moved from a non-replicated parent to
+a replicated parent, the replica will be created for the player as expected. Likewise, parenting
+a replica to a non-replicated replica will destroy it for that player. This feature is useful for
+controlling visible game chunks with entities that can move between those chunks.</p>
+<h4 id="replicareplicatefor">Replica:ReplicateFor()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ReplicateFor</span><span class="p">(</span><span class="s2">&quot;All&quot;</span><span class="p">)</span> <span class="c1">-- Replicates the Replica to everyone in the game and</span>
+<span class="c1">--   everyone who will join in the future</span>
+<span class="n">Replica</span><span class="p">:</span><span class="n">ReplicateFor</span><span class="p">(</span><span class="n">player</span><span class="p">)</span> <span class="c1">-- Selectively replicates the replica to a Player;</span>
+<span class="c1">--   Will not alter replication when the Replica is already replicated to &quot;All&quot;</span>
+</code></pre></div>
+Changes replication settings (subscription settings) for select players.</p>
+<p><strong>Only top level replicas can have their replication settings changed</strong>
+<strong>(top level replicas are replicas that were initially created without a parent).</strong></p>
+<h4 id="replicadestroyfor">Replica:DestroyFor()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">DestroyFor</span><span class="p">(</span><span class="s2">&quot;All&quot;</span><span class="p">)</span> <span class="c1">-- Destroys the Replica for all clients that had</span>
+<span class="c1">--   this replica replicated; Disables replication for future players</span>
+<span class="n">Replica</span><span class="p">:</span><span class="n">DestroyFor</span><span class="p">(</span><span class="n">player</span><span class="p">)</span> <span class="c1">-- Selectively destroys the replica for a Player</span>
+</code></pre></div>
+Changes replication settings (subscription settings) for select players.</p>
+<p><strong>Only top level replicas can have their replication settings changed</strong>
+<strong>(top level replicas are replicas that were initially created without a parent).</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Selectively destroying <code>Replica:DestroyFor(player)</code> for clients when the replica is replicated to <code>"All"</code>
+will throw an error - Call <code>Replica:DestroyFor("All")</code> first.</p>
+</div>
+<h4 id="replicaconnectonserverevent">Replica:ConnectOnServerEvent()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ConnectOnServerEvent</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection] (player, params...)</span>
+</code></pre></div>
+Simulates the behaviour of <a href="https://developer.roblox.com/en-us/api-reference/class/RemoteEvent#onserverevent-instance-player-tuple-arguments-">RemoteEvent.OnServerEvent</a>.</p>
+<h4 id="replicafireclient">Replica:FireClient()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">FireClient</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">params</span><span class="p">...)</span>
+</code></pre></div>
+Simulates the behaviour of <a href="https://developer.roblox.com/en-us/api-reference/class/RemoteEvent#fireclient-instance-player-tuple-arguments-">RemoteEvent:FireClient()</a>.</p>
+<h4 id="replicafireallclients">Replica:FireAllClients()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">FireAllClients</span><span class="p">(</span><span class="n">params</span><span class="p">...)</span>
+</code></pre></div>
+Simulates the behaviour of <a href="https://developer.roblox.com/en-us/api-reference/class/RemoteEvent#fireallclients-tuple-arguments-">RemoteEvent:FireAllClients()</a>.</p>
+<h4 id="replicadestroy">Replica:Destroy()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">Destroy</span><span class="p">()</span>
+</code></pre></div>
+Destroys replica and all of its descendants (Depth-first). <code>Replica</code> destruction signal is sent to the client first,
+while cleanup tasks assigned with <code>Replica:AddCleanupTask()</code> will be performed after.</p>
+<h3 id="client-replicacontroller">Client (ReplicaController)</h3>
+<p><em>(<code>path</code> and <code>function_name</code> parameters are defined in <a href="#common-types">CommonTypes</a>)</em></p>
+<h4 id="replicalistentowrite">Replica:ListenToWrite()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToWrite</span><span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (params...)</span>
+</code></pre></div>
+Listens to WriteLib mutator functions being triggered. See <a href="#writelib">WriteLib</a> section for examples.</p>
+<h4 id="replicalistentochange">Replica:ListenToChange()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToChange</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (new_value, old_value)</span>
+</code></pre></div>
+Creates a listener which gets triggered by <code>Replica:SetValue()</code> calls.</p>
+<h4 id="replicalistentonewkey">Replica:ListenToNewKey()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToNewKey</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (new_value, new_key)</span>
+</code></pre></div>
+Creates a listener which gets triggered by <code>Replica:SetValue()</code> calls when a new
+key is created inside <code>path</code> (value previously equal to <code>nil</code>). Note that this listener
+can't reference the key itself inside <code>path</code>.</p>
+<h4 id="replicalistentoarrayinsert">Replica:ListenToArrayInsert()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToArrayInsert</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (new_index, new_value)</span>
+</code></pre></div>
+Creates a listener which gets triggered by <code>Replica:ArrayInsert()</code> calls.</p>
+<h4 id="replicalistentoarrayset">Replica:ListenToArraySet()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToArraySet</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (index, new_value)</span>
+</code></pre></div>
+Creates a listener which gets triggered by <code>Replica:ArraySet()</code> calls.</p>
+<h4 id="replicalistentoarrayremove">Replica:ListenToArrayRemove()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToArrayRemove</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (old_index, old_value)</span>
+</code></pre></div>
+Creates a listener which gets triggered by <code>Replica:ArrayRemove()</code> calls.</p>
+<h4 id="replicalistentoraw">Replica:ListenToRaw()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToRaw</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (action_name, path_array, params...)</span>
+</code></pre></div>
+Allows the developer to parse exact arguments that have been passed to any of the
+<a href="#built-in-mutators">built-in mutators</a>.</p>
+<p>Possible parameter reference for <code>Replica:ListenToRaw()</code>:
+<div class="highlight"><pre><span></span><code><span class="c1">-- (&quot;SetValue&quot;, path_array, value)</span>
+<span class="c1">-- (&quot;SetValues&quot;, path_array, values)</span>
+<span class="c1">-- (&quot;ArrayInsert&quot;, path_array, value)</span>
+<span class="c1">-- (&quot;ArraySet&quot;, path_array, index, value)</span>
+<span class="c1">-- (&quot;ArrayRemove&quot;, path_array, index, old_value)</span>
+
+<span class="c1">-- path_array   [table] -- table type path</span>
+</code></pre></div></p>
+<h4 id="replicalistentochildadded">Replica:ListenToChildAdded()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ListenToChildAdded</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (replica)</span>
+</code></pre></div>
+Creates a listener which gets triggered when a new child <code>Replica</code> is created.</p>
+<h4 id="replicafindfirstchildofclass">Replica:FindFirstChildOfClass()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">FindFirstChildOfClass</span><span class="p">(</span><span class="n">replica_class</span><span class="p">)</span> <span class="c1">--&gt; [Replica] or nil</span>
+<span class="c1">--   replica_class   [string] -- Matches with Replica.Class</span>
+</code></pre></div>
+Returns a first child <code>Replica</code> of specified class if one exists.</p>
+<h4 id="replicaconnectonclientevent">Replica:ConnectOnClientEvent()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">ConnectOnClientEvent</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span> <span class="c1">--&gt; [ScriptConnection]</span>
+<span class="c1">--   listener   [function] (params...)</span>
+</code></pre></div>
+Simulates the behaviour of <a href="https://developer.roblox.com/en-us/api-reference/class/RemoteEvent#onclientevent-tuple-arguments-">RemoteEvent.OnClientEvent</a>.</p>
+<h4 id="replicafireserver">Replica:FireServer()</h4>
+<p><div class="highlight"><pre><span></span><code><span class="n">Replica</span><span class="p">:</span><span class="n">FireServer</span><span class="p">(</span><span class="n">params</span><span class="p">...)</span>
+</code></pre></div>
+Simulates the behaviour of <a href="https://developer.roblox.com/en-us/api-reference/class/RemoteEvent#fireserver-tuple-arguments-">RemoteEvent:FireServer()</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
