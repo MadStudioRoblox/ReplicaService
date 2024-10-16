@@ -1,5 +1,9 @@
 # Madwork - ReplicaService
 
+**[FOR NEW PROJECTS - USE Replica (Click here)](https://github.com/MadStudioRoblox/Replica)**
+
+(This project is no longer supported)
+
 ReplicaService is a selective state replication system. ReplicaService helps you make server code which changes and replicates any state to select clients.
 
 A state (in layman’s terms, a lua table that may contain almost anything) is wrapped with a Replica - like the name implies, it creates a [replica (identical copy)](https://en.wikipedia.org/wiki/Replica) of the wrapped state on the client-side of users you want to see that state. You may define clients who will see that replica, call mutator functions on the Replica to change the state (will change contents of the wrapped table) and make the clients listen to those changes or simply read the state whenever necessary. Furthermore, a Replica can be parented to another Replica (with a few exceptions discussed later), unloaded for select clients and, of course, destroyed.
