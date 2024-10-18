@@ -966,6 +966,16 @@ function ReplicaController.GetReplicaById(replica_id)
 	return Replicas[replica_id]
 end
 
+function ReplicaController.GetReplicaByTokenName(token_name)
+	for _, replica in Replicas do 
+		if replica.Class == token_name then
+			return replica
+		end
+	end
+
+	return nil
+end
+
 ----- Connections -----
 
 -- Fired from server after initial data is sent:
